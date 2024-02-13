@@ -11,17 +11,29 @@ def google_search(api_key, engine_id, query):
     response = requests.get(url)
     data = response.json()
     if 'items' in data:
-        return [item for item in data['items']]
+        # Return top 10 results
+        return [item for item in data['items']][:10] 
     else:
         return []
 
+def calculate_precision(results):
+    # Get top 10 results
+    top_10_results = results[:10]
+
+    # Calculate the number of relevant results
+    num_relevant = sum(result['relevant'] for result in top_10_results)
+
+    return num_relevant / 10.0
+
 def display_results(results):
     print("======================")
-    for i, result in enumerate(zip(results), 1):
+    for i, result in enumerate(results, 1):
         print(f"Result {i}:")
         print(f"URL: {result.get('link', 'N/A')}")
         print(f"Title: {result.get('title', 'N/A')}")
         print(f"Summary: {result.get('snippet', 'N/A')}")
+        feedback = input("Is this result relevant? (Y/N): ")
+        result['relevant'] = feedback.lower() == 'y'
         print()
 
 def main(api_key, engine_id, precision, query):
@@ -38,8 +50,22 @@ def main(api_key, engine_id, precision, query):
             print("No results. Exiting...")
             break
         display_results(results)
-        
+        precision_at_10 = calculate_precision(results)
+        print(f"Precision at 10: {precision_at_10}")
 
+        if precision_at_10 >= precision:
+            print("Desired precision reached. Exiting...")
+            break
+        elif precision_at_10 == 0:
+            print("No relevant results. Exiting...")
+            break
+        else:
+            print("try again")
+            break # will change this later
+            relevant_results = [result for result in results if result['relevant']]
+
+        
+            
 
 if __name__ == "__main__":
     # Handle command line arguments
@@ -61,5 +87,7 @@ if __name__ == "__main__":
     except ValueError:
         print("Precision must be between 0 and 1")
         sys.exit(1)
+    
+    main(api_key, engine_id, precision, query)
 
     

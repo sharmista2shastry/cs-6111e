@@ -16,6 +16,15 @@ def google_search(api_key, engine_id, query):
     else:
         return []
 
+def calculate_precision(results):
+    # Get top 10 results
+    top_10_results = results[:10]
+
+    # Calculate the number of relevant results
+    num_relevant = sum(result['relevant'] for result in top_10_results)
+
+    return num_relevant / 10.0
+
 def display_results(results):
     print("======================")
     for i, result in enumerate(results, 1):

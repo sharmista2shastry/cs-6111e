@@ -50,6 +50,8 @@ def main(api_key, engine_id, precision, query):
             print("No results. Exiting...")
             break
         display_results(results)
+        precision_at_10 = calculate_precision(results)
+        print(f"Precision at 10: {precision_at_10}")
 
 if __name__ == "__main__":
     # Handle command line arguments

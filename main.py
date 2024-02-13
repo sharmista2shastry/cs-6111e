@@ -5,6 +5,11 @@ Sharmista Shastry (ss6950) and Cindy Ruan (cxr2000)
 
 import sys
 import requests
+from rake_nltk import Rake
+import nltk
+nltk.download('stopwords')
+nltk.download('punkt')
+
 
 def google_search(api_key, engine_id, query):
     url = f"https://www.googleapis.com/customsearch/v1?key={api_key}&cx={engine_id}&q={query}"
@@ -45,24 +50,37 @@ def main(api_key, engine_id, precision, query):
     print("Google Search Results:")
 
     results = google_search(api_key, engine_id, query)
+    # print(results)
     while True:
         if not results:
             print("No results. Exiting...")
             break
         display_results(results)
         precision_at_10 = calculate_precision(results)
-        print(f"Precision at 10: {precision_at_10}")
+        print("======================")
+        print("FEEDBACK SUMMARY")
+        print(f"Query: {query}")
+        print(f"Precision: {precision_at_10}")
 
         if precision_at_10 >= precision:
-            print("Desired precision reached. Exiting...")
+            print("Desired precision reached, done")
             break
         elif precision_at_10 == 0:
             print("No relevant results. Exiting...")
             break
         else:
-            print("try again")
-            break # will change this later
             relevant_results = [result for result in results if result['relevant']]
+            relevant_text = ' '.join([result['title'] + ' ' + result['snippet'] for result in relevant_results])
+
+            r = Rake()
+            r.extract_keywords_from_text(relevant_text)
+            new_keywords = r.get_ranked_phrases()[:2]
+            print("Still below the desired precision of", precision)
+            print("Indexing results...")
+            print("Indexing results...")
+            print("Augmenting by:", new_keywords)
+            main(api_key, engine_id, precision, ' '.join(new_keywords))
+            
 
         
             

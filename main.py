@@ -53,6 +53,15 @@ def main(api_key, engine_id, precision, query):
         precision_at_10 = calculate_precision(results)
         print(f"Precision at 10: {precision_at_10}")
 
+        if precision_at_10 >= precision:
+            print("Desired precision reached. Exiting...")
+            break
+        elif precision_at_10 == 0:
+            print("No relevant results. Exiting...")
+            break
+        else:
+            
+
 if __name__ == "__main__":
     # Handle command line arguments
     if len(sys.argv) != 5:

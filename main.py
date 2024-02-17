@@ -12,7 +12,9 @@ from nltk.corpus import stopwords
 from nltk.stem import PorterStemmer
 nltk.download('punkt')
 from nltk.tokenize import word_tokenize
+import math
 
+# Initialize stop words and stemmer
 stop_words = set(stopwords.words('english'))
 stemmer = PorterStemmer()
 
@@ -47,54 +49,37 @@ def display_results(results):
         print()
 
 def calculate_tf(document):
-    # Tokenize the document into terms
     terms = word_tokenize(document.lower())
-    
-    # Remove stop words and apply stemming
-    terms = [stemmer.stem(term) for term in terms if term not in stop_words and term != '']
-    
-    # Count the frequency of each term
+    terms = [stemmer.stem(term) for term in terms if term not in stop_words and term.isalnum()] # Ensure terms are alphanumeric
     term_frequency = Counter(terms)
     
     return term_frequency
 
-import math
-
 def calculate_idf(documents):
-    # Calculate the total number of documents
     num_documents = len(documents)
-    
-    # Calculate the number of documents each term appears in
-    document_frequency = Counter(stemmer.stem(term) for document in documents for term in word_tokenize(document.lower()))
-    
-    # Calculate the inverse document frequency for each term
-    inverse_document_frequency = {term: math.log(num_documents / frequency) for term, frequency in document_frequency.items()}
-    
+
+    document_frequency = Counter(term for document in documents for term in set(word_tokenize(document.lower())))
+    inverse_document_frequency = {term: math.log(num_documents / (1 + frequency)) for term, frequency in document_frequency.items()} # Added 1 to avoid division by zero
+
     return inverse_document_frequency
 
 def calculate_tfidf(document, idf):
-    # Calculate the term frequency for the document
     tf = calculate_tf(document)
-    
-    # Calculate the tf-idf for each term
-    tfidf = {term: frequency * idf[term] for term, frequency in tf.items()}
-    
+
+    tfidf = {term: frequency * idf.get(term, 0) for term, frequency in tf.items()}
     return tfidf
 
 def rocchio_expand_query(current_query, results, alpha=1, beta=0.75, gamma=0.15):
-    # Tokenize the current query, remove stop words, and apply stemming
-    query_terms = [stemmer.stem(term) for term in word_tokenize(current_query.lower()) if term not in stop_words and term != '']
+    query_terms = [stemmer.stem(term) for term in word_tokenize(current_query.lower()) if term not in stop_words and term.isalnum()] # Ensure terms are alphanumeric
 
-    # Initialize counters for relevant and non-relevant term frequencies
     relevant_docs = [result for result in results if result.get('relevant', False)]
     non_relevant_docs = [result for result in results if not result.get('relevant', False)]
 
-    # Calculate IDF for all documents
     all_docs = [' '.join(word_tokenize(result['title'].lower() + ' ' + result['snippet'].lower())) for result in results]
     idf = calculate_idf(all_docs)
 
-    # Calculate TF-IDF for relevant and non-relevant documents
     relevant_tfidf = Counter()
+
     for doc in relevant_docs:
         relevant_tfidf.update(calculate_tfidf(doc['title'] + ' ' + doc['snippet'], idf))
 
@@ -102,23 +87,17 @@ def rocchio_expand_query(current_query, results, alpha=1, beta=0.75, gamma=0.15)
     for doc in non_relevant_docs:
         non_relevant_tfidf.update(calculate_tfidf(doc['title'] + ' ' + doc['snippet'], idf))
 
-    # Compute the centroid of relevant and non-relevant documents
-    relevant_centroid = {term: (beta / len(relevant_tfidf)) * freq for term, freq in relevant_tfidf.items()}
-    non_relevant_centroid = {term: (gamma / len(non_relevant_tfidf)) * freq for term, freq in non_relevant_tfidf.items()}
+    relevant_centroid = {term: (beta * freq / len(relevant_docs)) for term, freq in relevant_tfidf.items()}
 
-    # Adjust the query vector
+    non_relevant_centroid = {term: (gamma * freq / len(non_relevant_docs)) for term, freq in non_relevant_tfidf.items()}
+
     adjusted_query = {term: alpha * query_terms.count(term) + relevant_centroid.get(term, 0) - non_relevant_centroid.get(term, 0)
                       for term in set(query_terms) | set(relevant_centroid) | set(non_relevant_centroid)}
-
-    # Select the top terms based on the weights for the new query
-    new_query_terms = sorted(adjusted_query, key=adjusted_query.get, reverse=True)
-
-    # Filter out the current query terms and construct the new query
-    new_query_terms = [term for term in new_query_terms if term not in query_terms][:5]  # Limit to top 5 terms not in the current query
+    
+    new_query_terms = sorted(adjusted_query, key=adjusted_query.get, reverse=True)[:5] # Limit to top 5 terms
     new_query = ' '.join(new_query_terms)
 
     return new_query
-
 
 def main(api_key, engine_id, precision, query):
     print("Parameters:")
@@ -142,10 +121,10 @@ def main(api_key, engine_id, precision, query):
 
         if precision_at_10 >= precision:
             print("Desired precision reached, done")
-            break
+            return 
         elif precision_at_10 == 0:
             print("No relevant results. Exiting...")
-            break
+            return
         else:
             new_keywords = rocchio_expand_query(query, results)
             print("Still below the desired precision")

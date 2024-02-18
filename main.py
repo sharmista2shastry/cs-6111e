@@ -69,7 +69,7 @@ def calculate_tfidf(document, idf):
     tfidf = {term: frequency * idf.get(term, 0) for term, frequency in tf.items()}
     return tfidf
 
-def rocchio_expand_query(current_query, results, alpha=1, beta=0.75, gamma=0.15):
+def rocchio_expand_query(current_query, results, alpha=1.2, beta=0.80, gamma=0.15):
     query_terms = [stemmer.stem(term) for term in word_tokenize(current_query.lower()) if term not in stop_words and term.isalnum()] # Ensure terms are alphanumeric
 
     relevant_docs = [result for result in results if result.get('relevant', False)]
@@ -84,6 +84,7 @@ def rocchio_expand_query(current_query, results, alpha=1, beta=0.75, gamma=0.15)
         relevant_tfidf.update(calculate_tfidf(doc['title'] + ' ' + doc['snippet'], idf))
 
     non_relevant_tfidf = Counter()
+
     for doc in non_relevant_docs:
         non_relevant_tfidf.update(calculate_tfidf(doc['title'] + ' ' + doc['snippet'], idf))
 

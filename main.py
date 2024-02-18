@@ -7,9 +7,16 @@ import sys
 import requests
 from rake_nltk import Rake
 import nltk
-nltk.download('stopwords')
+from collections import Counter, defaultdict
+from nltk.corpus import stopwords
+from nltk.stem import PorterStemmer
 nltk.download('punkt')
+from nltk.tokenize import word_tokenize
+import math
 
+# Initialize stop words and stemmer
+stop_words = set(stopwords.words('english'))
+stemmer = PorterStemmer()
 
 def google_search(api_key, engine_id, query):
     url = f"https://www.googleapis.com/customsearch/v1?key={api_key}&cx={engine_id}&q={query}"
@@ -41,17 +48,77 @@ def display_results(results):
         result['relevant'] = feedback.lower() == 'y'
         print()
 
+def calculate_tf(document):
+    terms = word_tokenize(document.lower())
+    terms = [stemmer.stem(term) for term in terms if term not in stop_words and term.isalnum()] # Ensure terms are alphanumeric
+    term_frequency = Counter(terms)
+    
+    return term_frequency
+
+def calculate_idf(documents):
+    num_documents = len(documents)
+
+    document_frequency = Counter(term for document in documents for term in set(word_tokenize(document.lower())))
+    inverse_document_frequency = {term: math.log(num_documents / (1 + frequency)) for term, frequency in document_frequency.items()} # Added 1 to avoid division by zero
+
+    return inverse_document_frequency
+
+def calculate_tfidf(document, idf):
+    tf = calculate_tf(document)
+
+    tfidf = {term: frequency * idf.get(term, 0) for term, frequency in tf.items()}
+    return tfidf
+
+
+def rocchio_expand_query(current_query, results, alpha=1.2, beta=0.80, gamma=0.15):
+    query_terms = [stemmer.stem(term) for term in word_tokenize(current_query.lower()) if term not in stop_words and term.isalnum()] # Ensure terms are alphanumeric
+
+    relevant_docs = [result for result in results if result.get('relevant', False)]
+    non_relevant_docs = [result for result in results if not result.get('relevant', False)]
+
+    all_docs = [' '.join(word_tokenize(result['title'].lower() + ' ' + result['snippet'].lower())) for result in results]
+    idf = calculate_idf(all_docs)
+
+    relevant_tfidf = Counter()
+
+    for doc in relevant_docs:
+        relevant_tfidf.update(calculate_tfidf(doc['title'] + ' ' + doc['snippet'], idf))
+
+    non_relevant_tfidf = Counter()
+
+    for doc in non_relevant_docs:
+        non_relevant_tfidf.update(calculate_tfidf(doc['title'] + ' ' + doc['snippet'], idf))
+
+    relevant_centroid = {term: (beta * freq / len(relevant_docs)) for term, freq in relevant_tfidf.items()}
+
+    non_relevant_centroid = {term: (gamma * freq / len(non_relevant_docs)) for term, freq in non_relevant_tfidf.items()}
+
+    adjusted_query = {term: alpha * query_terms.count(term) + relevant_centroid.get(term, 0) - non_relevant_centroid.get(term, 0)
+                      for term in set(query_terms) | set(relevant_centroid) | set(non_relevant_centroid)}
+    
+    new_query_terms = sorted(adjusted_query, key=adjusted_query.get, reverse=True)
+
+    # Filter out old terms from the new terms
+    new_query_terms = [term for term in new_query_terms if term not in query_terms]
+
+    num_new_terms = 2 if current_query == query else 2
+
+    # Concatenate initial query terms with new terms
+    new_query = ' '.join(query_terms) + ' ' + ' '.join(new_query_terms[:num_new_terms])
+
+
+    return new_query
+
 def main(api_key, engine_id, precision, query):
     print("Parameters:")
     print(f"Client key  = {api_key}")
     print(f"Engine key  = {engine_id}")
     print(f"Query       = {query}")
     print(f"Precision   = {precision}")
-    print("Google Search Results:")
 
-    results = google_search(api_key, engine_id, query)
-    # print(results)
     while True:
+        print("Google Search Results:")
+        results = google_search(api_key, engine_id, query)
         if not results:
             print("No results. Exiting...")
             break
@@ -64,25 +131,16 @@ def main(api_key, engine_id, precision, query):
 
         if precision_at_10 >= precision:
             print("Desired precision reached, done")
-            break
+            return 
         elif precision_at_10 == 0:
             print("No relevant results. Exiting...")
-            break
+            return
         else:
-            relevant_results = [result for result in results if result['relevant']]
-            relevant_text = ' '.join([result['title'] + ' ' + result['snippet'] for result in relevant_results])
-
-            r = Rake()
-            r.extract_keywords_from_text(relevant_text)
-            new_keywords = r.get_ranked_phrases()[:2]
-            print("Still below the desired precision of", precision)
+            new_keywords = rocchio_expand_query(query, results)
+            print("Still below the desired precision")
             print("Indexing results...")
-            print("Indexing results...")
-            print("Augmenting by:", new_keywords)
-            main(api_key, engine_id, precision, ' '.join(new_keywords))
-            
-
-        
+            print("Augmenting by:", set(new_keywords.split()))
+            query = new_keywords  # Update the query for the next iteration
             
 
 if __name__ == "__main__":

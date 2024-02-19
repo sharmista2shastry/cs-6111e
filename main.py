@@ -1,18 +1,13 @@
-'''
-COMS E6111 - Project 1
-Sharmista Shastry (ss6950) and Cindy Ruan (cxr2000)
-'''
-
 import sys
 import requests
-from rake_nltk import Rake
 import nltk
-from collections import Counter, defaultdict
 from nltk.corpus import stopwords
 from nltk.stem import PorterStemmer
-nltk.download('punkt')
 from nltk.tokenize import word_tokenize
+from collections import Counter
 import math
+
+nltk.download('punkt', quiet=True)
 
 # Initialize stop words and stemmer
 stop_words = set(stopwords.words('english'))
@@ -23,18 +18,13 @@ def google_search(api_key, engine_id, query):
     response = requests.get(url)
     data = response.json()
     if 'items' in data:
-        # Return top 10 results
         return [item for item in data['items']][:10] 
     else:
         return []
 
 def calculate_precision(results):
-    # Get top 10 results
     top_10_results = results[:10]
-
-    # Calculate the number of relevant results
     num_relevant = sum(result['relevant'] for result in top_10_results)
-
     return num_relevant / 10.0
 
 def display_results(results):
@@ -50,55 +40,39 @@ def display_results(results):
 
 def calculate_tf(document):
     terms = word_tokenize(document.lower())
-    terms = [stemmer.stem(term) for term in terms if term not in stop_words and term.isalnum()] # Ensure terms are alphanumeric
+    terms = [stemmer.stem(term) for term in terms if term not in stop_words and term.isalnum()]
     term_frequency = Counter(terms)
-    
     return term_frequency
 
 def calculate_idf(documents):
     num_documents = len(documents)
-
     document_frequency = Counter(term for document in documents for term in set(word_tokenize(document.lower())))
-    inverse_document_frequency = {term: math.log(num_documents / (1 + frequency)) for term, frequency in document_frequency.items()} # Added 1 to avoid division by zero
-
+    inverse_document_frequency = {term: math.log(num_documents / (1 + frequency)) for term, frequency in document_frequency.items()}
     return inverse_document_frequency
 
 def calculate_tfidf(document, idf):
     tf = calculate_tf(document)
-
     tfidf = {term: frequency * idf.get(term, 0) for term, frequency in tf.items()}
     return tfidf
 
 def rocchio_expand_query(current_query, results, alpha=1.2, beta=0.80, gamma=0.15):
-    query_terms = [stemmer.stem(term) for term in word_tokenize(current_query.lower()) if term not in stop_words and term.isalnum()] # Ensure terms are alphanumeric
+    original_query_terms = set(current_query.split())
+    query_terms = [stemmer.stem(term.lower()) for term in original_query_terms if term.lower() not in stop_words]
 
     relevant_docs = [result for result in results if result.get('relevant', False)]
-    non_relevant_docs = [result for result in results if not result.get('relevant', False)]
-
     all_docs = [' '.join(word_tokenize(result['title'].lower() + ' ' + result['snippet'].lower())) for result in results]
     idf = calculate_idf(all_docs)
 
     relevant_tfidf = Counter()
-
     for doc in relevant_docs:
         relevant_tfidf.update(calculate_tfidf(doc['title'] + ' ' + doc['snippet'], idf))
 
-    non_relevant_tfidf = Counter()
+    # Select top terms that are not already in the query
+    new_terms = [term for term, score in relevant_tfidf.most_common() if term not in query_terms][:2]
 
-    for doc in non_relevant_docs:
-        non_relevant_tfidf.update(calculate_tfidf(doc['title'] + ' ' + doc['snippet'], idf))
-
-    relevant_centroid = {term: (beta * freq / len(relevant_docs)) for term, freq in relevant_tfidf.items()}
-
-    non_relevant_centroid = {term: (gamma * freq / len(non_relevant_docs)) for term, freq in non_relevant_tfidf.items()}
-
-    adjusted_query = {term: alpha * query_terms.count(term) + relevant_centroid.get(term, 0) - non_relevant_centroid.get(term, 0)
-                      for term in set(query_terms) | set(relevant_centroid) | set(non_relevant_centroid)}
-    
-    new_query_terms = sorted(adjusted_query, key=adjusted_query.get, reverse=True)[:5] # Limit to top 5 terms
-    new_query = ' '.join(new_query_terms)
-
-    return new_query
+    # Add at most 2 new terms to the original query
+    updated_query = ' '.join(list(original_query_terms) + new_terms)
+    return updated_query
 
 def main(api_key, engine_id, precision, query):
     print("Parameters:")
@@ -122,39 +96,28 @@ def main(api_key, engine_id, precision, query):
 
         if precision_at_10 >= precision:
             print("Desired precision reached, done")
-            return 
+            return
         elif precision_at_10 == 0:
             print("No relevant results. Exiting...")
             return
         else:
-            new_keywords = rocchio_expand_query(query, results)
+            new_query = rocchio_expand_query(query, results)
             print("Still below the desired precision")
-            print("Indexing results...")
-            print("Augmenting by:", set(new_keywords.split()) - set(query.split()))
-            query = new_keywords  # Update the query for the next iteration
-            
+            print("Augmenting by:", set(new_query.split()) - set(query.split()))
+            query = new_query  # Update the query for the next iteration
+            print(f"New query: {query}")
 
 if __name__ == "__main__":
-    # Handle command line arguments
     if len(sys.argv) != 5:
         print("Usage: python main.py <google api key> <google engine id> <precision> <query>")
         sys.exit(1)
 
-    # Get command line arguments
     api_key = sys.argv[1]
     engine_id = sys.argv[2]
-    precision = sys.argv[3]
-    query = sys.argv[4]
-
-    # Check if precision is between 0 and 1
-    try:
-        precision = float(precision)
-        if precision < 0 or precision > 1:
-            raise ValueError
-    except ValueError:
+    precision = float(sys.argv[3])
+    if precision < 0 or precision > 1:
         print("Precision must be between 0 and 1")
         sys.exit(1)
-    
-    main(api_key, engine_id, precision, query)
+    query = sys.argv[4]
 
-    
+    main(api_key, engine_id, precision, query)

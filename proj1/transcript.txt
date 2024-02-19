@@ -4,7 +4,7 @@ Query: [per se]
 
 Results:
 
-(dbproj) ss6950@instance-1:~/dbproj/cs-6111e/proj1$ python main.py AIzaSyBd3QkH6ICMU5WxD6-MrmyqC8wNTJbj_SQ 151ebbf4130c44a63 0.9 "per se"
+(env) (base) sharmistashastry@Sharmistas-Air proj1 % python main.py AIzaSyBd3QkH6ICMU5WxD6-MrmyqC8wNTJbj_SQ 151ebbf4130c44a63 0.9 "per se"
 Parameters:
 Client key  = AIzaSyBd3QkH6ICMU5WxD6-MrmyqC8wNTJbj_SQ
 Engine key  = 151ebbf4130c44a63
@@ -78,48 +78,48 @@ Query: per se
 Precision: 0.5
 Still below the precision of 0.9
 Indexing results...
-Augmenting by: {'menu', 'michelin'}
+Augmenting by: {'michelin', 'menu'}
 Parameters:
 Client key  = AIzaSyBd3QkH6ICMU5WxD6-MrmyqC8wNTJbj_SQ
 Engine key  = 151ebbf4130c44a63
-Query       = per se michelin menu
+Query       = michelin menu se per
 Precision   = 0.9
 Google Search Results:
 ======================
 Result 1:
 URL: https://guide.michelin.com/us/en/new-york-state/new-york/restaurant/per-se
 Title: Per Se – New York - a MICHELIN Guide Restaurant
-Summary: Per Se – a Three Stars: Exceptional cuisine restaurant in the 2023 MICHELIN Guide USA. The MICHELIN inspectors' point of view, ...
+Summary: Per Se – a Three Stars: Exceptional cuisine restaurant in the 2023 MICHELIN Guide USA. The MICHELIN inspectors' point of view, information on prices, ...
 Is this result relevant? (Y/N): y
 
 Result 2:
 URL: https://www.thomaskeller.com/perseny
 Title: Per Se | Thomas Keller Restaurant Group
-Summary: Menus & Stories. Menus & Stories; Daily Menus · Farmers & Foragers ... Private Dining & Events · Per Se. Per Se Front Door. center. About.
+Summary: Menus & Stories. Menus & Stories; Daily Menus · Farmers & Foragers. Wine & Cocktails. Wine ... Private Dining & Events · Per Se. Per Se Front Door. center. About.
 Is this result relevant? (Y/N): y
 
 Result 3:
 URL: https://www.exploretock.com/perse
 Title: Per Se - New York, NY | Tock
-Summary: ... menu and a vegetable tasting menu using classic French technique and ... Michelin Guide, 2022. Wine Spectator logo. Grand Award. Wine ...
+Summary: ... restaurant is Chef Keller's second three-Michelin-starred property featuring Chef's tasting menu and a vegetable tasting menu using classic French technique ...
 Is this result relevant? (Y/N): y
 
 Result 4:
-URL: https://en.wikipedia.org/wiki/Per_Se_(restaurant)
-Title: Per Se (restaurant) - Wikipedia
-Summary: Per Se was awarded three stars ("Exceptional cuisine, worth a special journey") in the 2006 inaugural Michelin Guide to New York City, ...
+URL: https://lovefoodmore.com/per-se/
+Title: My Stagè at 3 Starred Michelin Restaurant, Per Se - Lovefoodmore ...
+Summary: Sep 28, 2019 ... “Congratulations, Chef Corey would like to offer you a position as a commis at Per Se” A message I received from Elaine Smyth. She was whom I ...
 Is this result relevant? (Y/N): y
 
 Result 5:
-URL: https://lovefoodmore.com/per-se/
-Title: My Stagè at 3 Starred Michelin Restaurant, Per Se - Lovefoodmore ...
-Summary: Sep 28, 2019 ... “Congratulations, Chef Corey would like to offer you a position as a commis at Per Se” A message I received from Elaine ...
+URL: https://www.adventureaffinity.com/per-se-nyc-michelin-star-restaurant/
+Title: Per Se: NYC Michelin Star Restaurant
+Summary: Jun 28, 2015 ... Per Se now accepts reservations exactly two months ahead to the day, precisely at 10 a.m., when the reservation line opens. Otherwise, try your ...
 Is this result relevant? (Y/N): y
 
 Result 6:
-URL: https://www.instagram.com/perseny/
-Title: Per Se (@perseny) • Instagram photos and videos
-Summary: Chef Thomas Keller's 3-Star Michelin restaurant overlooking Columbus Circle & Central Park located in New York City.
+URL: https://www.thewholeworldisaplayground.com/the-per-se-experience-saturday-afternoon-lunch-in-new-york-with-three-michelin-stars/
+Title: The Per Se Experience: Saturday Afternoon Lunch in New York with ...
+Summary: Feb 27, 2021 ... ... Per Se, one of New York's finest three Michelin Star restaurants. ... menu with one vegetable tasting menu and one Chef's tasting menu. The menus ...
 Is this result relevant? (Y/N): y
 
 Result 7:
@@ -129,26 +129,26 @@ Summary: Three MICHELIN Stars: Exceptional cuisine, worth a special journey! Men
 Is this result relevant? (Y/N): y
 
 Result 8:
-URL: https://www.thewholeworldisaplayground.com/the-per-se-experience-saturday-afternoon-lunch-in-new-york-with-three-michelin-stars/
-Title: The Per Se Experience: Saturday Afternoon Lunch in New York with ...
-Summary: Feb 27, 2021 ... ... Per Se, one of New York's finest three Michelin Star restaurants. ... menu and one Chef's tasting menu. The menus were ...
+URL: https://www.instagram.com/perseny/
+Title: Per Se (@perseny) • Instagram photos and videos
+Summary: Per Se. रेस्टुरेन्ट. Chef Thomas Keller's 3-Star Michelin restaurant overlooking Columbus Circle & Central Park located in New York City. 10 ...
 Is this result relevant? (Y/N): y
 
 Result 9:
-URL: https://ny.eater.com/2016/1/28/10858508/thomas-keller-per-se-response
-Title: Keller Responds to Per Se Review: 'We Are Sorry We Let You Down ...
-Summary: Jan 28, 2016 ... ... Michelin star-chasers who probably don't care about reviews like this. If Per Se loses one of its Michelin stars ...
+URL: https://en.wikipedia.org/wiki/Per_Se_(restaurant)
+Title: Per Se (restaurant) - Wikipedia
+Summary: Per Se was awarded three stars ("Exceptional cuisine, worth a special journey") in the 2006 inaugural Michelin Guide to New York City, and has maintained that ...
 Is this result relevant? (Y/N): y
 
 Result 10:
-URL: https://www.shellyinreallife.com/nyc-per-se/
-Title: NYC: Per Se - Shelly in Real Life
-Summary: Dec 30, 2011 ... That was definitely a “OMG, I live in New York!” moment for me, being able to walk to a 3 michelin star restaurant ...
+URL: https://ny.eater.com/2016/1/28/10858508/thomas-keller-per-se-response
+Title: Keller Responds to Per Se Review: 'We Are Sorry We Let You Down ...
+Summary: Jan 28, 2016 ... ... menu, our service and our standards ... Michelin star-chasers who probably don't care about reviews like this. If Per Se loses one of its Michelin ...
 Is this result relevant? (Y/N): y
 
 ======================
 FEEDBACK SUMMARY
-Query: per se michelin menu
+Query: michelin menu se per
 Precision: 1.0
 Desired precision reached, done
 
@@ -237,7 +237,7 @@ Test Case 3: Information on COVID-19 cases
 
 Query: [cases]
 
-(dbproj) ss6950@instance-1:~/dbproj/cs-6111e/proj1$ python main.py AIzaSyBd3QkH6ICMU5WxD6-MrmyqC8wNTJbj_SQ 151ebbf4130c44a63 0.9 "cases"
+(env) (base) sharmistashastry@Sharmistas-Air proj1 % python main.py AIzaSyBd3QkH6ICMU5WxD6-MrmyqC8wNTJbj_SQ 151ebbf4130c44a63 0.9 "cases"
 Parameters:
 Client key  = AIzaSyBd3QkH6ICMU5WxD6-MrmyqC8wNTJbj_SQ
 Engine key  = 151ebbf4130c44a63
@@ -248,61 +248,61 @@ Google Search Results:
 Result 1:
 URL: https://www.cases.org/
 Title: CASES: Home
-Summary: From court and program offices in the Bronx, Brooklyn, and Manhattan, CASES provides community-based alternatives to jail and prison. These programs address ...
+Summary: From court and program offices in the Bronx, Brooklyn, and Manhattan, CASES provides community-based alternatives to jail and prison.
 Is this result relevant? (Y/N): n
 
 Result 2:
 URL: https://www.icc-cpi.int/cases
 Title: cases | International Criminal Court
-Summary: Banda. At large. Case also involved Saleh Mohammed Jerbo Jamus but proceedings against him were terminated on 4 October 2013 following his passing. On 7 March ...
+Summary: Banda. At large. Case also involved Saleh Mohammed Jerbo Jamus but proceedings against him were terminated on 4 October 2013 following ...
 Is this result relevant? (Y/N): n
 
 Result 3:
-URL: https://www.worldometers.info/coronavirus/
-Title: COVID - Coronavirus Statistics - Worldometer
-Summary: Daily and weekly updated statistics tracking the number of COVID-19 cases, recovered, and deaths. Historical data with cumulative charts, graphs, ...
-Is this result relevant? (Y/N): y
-
-Result 4:
-URL: https://www.casetify.com/
-Title: CASETiFY: Show Your Colors
-Summary: CASETiFY - We make the most sustainable yet protective phone cases for iPhone 15 / iPhone 15 Pro / iPhone 15 Plus / iPhone 15 Pro Max and tech accessories.
-Is this result relevant? (Y/N): n
-
-Result 5:
 URL: https://www.icj-cij.org/cases
 Title: Cases | INTERNATIONAL COURT OF JUSTICE
-Summary: Main navigation ... The Court has a twofold role: to settle, in accordance with international law, legal disputes submitted to it by States (contentious cases) ...
+Summary: Main navigation ... The Court has a twofold role: to settle, in accordance with international law, legal disputes submitted to it by ...
+Is this result relevant? (Y/N): n
+
+Result 4:
+URL: https://www.worldometers.info/coronavirus/
+Title: COVID - Coronavirus Statistics - Worldometer
+Summary: Daily and weekly updated statistics tracking the number of COVID-19 cases, recovered, and deaths. Historical data with cumulative ...
+Is this result relevant? (Y/N): y
+
+Result 5:
+URL: https://www.casetify.com/
+Title: CASETiFY: Show Your Colors
+Summary: CASETiFY - We make the most sustainable yet protective phone cases for iPhone 15 / iPhone 15 Pro / iPhone 15 Plus / iPhone 15 Pro ...
 Is this result relevant? (Y/N): n
 
 Result 6:
-URL: https://acis.eoir.justice.gov/
-Title: Automated Case Information
-Summary: EOIR Automated Case Information ... Please check https://www.justice.gov/eoir-operational-status for up to date closures. ... Welcome to the Automated Case ...
-Is this result relevant? (Y/N): n
-
-Result 7:
-URL: https://casesearch.courts.state.md.us/
-Title: Maryland Judiciary Case Search
-Summary: Confidential records and information will not be returned in your search results. The information displayed on this Web Site is generated from computerized ...
-Is this result relevant? (Y/N): n
-
-Result 8:
 URL: https://www.oyez.org/cases
 Title: 2023-2024 Term | Oyez
 Summary: US Supreme Court cases from the 2023-2024 term.
 Is this result relevant? (Y/N): n
 
+Result 7:
+URL: https://acis.eoir.justice.gov/
+Title: EOIR Case Status
+Summary: N/A
+Is this result relevant? (Y/N): n
+
+Result 8:
+URL: https://casesearch.courts.state.md.us/
+Title: Maryland Judiciary Case Search
+Summary: Confidential records and information will not be returned in your search results. The information displayed on this Web Site is ...
+Is this result relevant? (Y/N): n
+
 Result 9:
-URL: https://www.cdc.gov/measles/cases-outbreaks.html
-Title: Measles Cases and Outbreaks | CDC
-Summary: Measles cases in 2019 · From January 1 to December 31, 2019, 1,274* individual cases of measles were confirmed in 31 states. · This is the greatest number of ...
+URL: https://acis.eoir.justice.gov/en/
+Title: Automated Case Information
+Summary: Case information from this automated resource is provided for convenience only. Documents the immigration court or Board of Immigration ...
 Is this result relevant? (Y/N): n
 
 Result 10:
-URL: https://pacer.uscourts.gov/
-Title: Public Access to Court Electronic Records | PACER: Federal Court ...
-Summary: Search for a case in the federal court where the case was filed, or; Search a nationwide index of federal court cases. The PACER Service Center can assist you ...
+URL: https://www.cdc.gov/measles/cases-outbreaks.html
+Title: Measles Cases and Outbreaks | CDC
+Summary: Measles cases in 2019 · From January 1 to December 31, 2019, 1,274* individual cases of measles were confirmed in 31 states. · This is ...
 Is this result relevant? (Y/N): n
 
 ======================
@@ -311,76 +311,76 @@ Query: cases
 Precision: 0.1
 Still below the precision of 0.9
 Indexing results...
-Augmenting by: {'covid', 'data'}
+Augmenting by: {'covid', 'number'}
 Parameters:
 Client key  = AIzaSyBd3QkH6ICMU5WxD6-MrmyqC8wNTJbj_SQ
 Engine key  = 151ebbf4130c44a63
-Query       = cases covid data
+Query       = covid number cases
 Precision   = 0.9
 Google Search Results:
 ======================
 Result 1:
-URL: https://covid.cdc.gov/
-Title: CDC COVID Data Tracker: Home
-Summary: This webpage presents data on COVID-19 cases with information on pregnancy status reported to CDC. COVID-19 is a nationally notifiable disease and reporting ...
-Is this result relevant? (Y/N): y
-
-Result 2:
 URL: https://www.worldometers.info/coronavirus/
 Title: COVID - Coronavirus Statistics - Worldometer
 Summary: Coronavirus Cases: 703,471,314. view by country. Deaths: 6,984,533. Recovered: 674,227,426. Active Cases. 22,259,355. Currently Infected Patients. 22,223,644 ( ...
 Is this result relevant? (Y/N): y
 
+Result 2:
+URL: https://covid.cdc.gov/
+Title: CDC COVID Data Tracker: Home
+Summary: This webpage presents data on COVID-19 cases with information on pregnancy status reported to CDC. ... In addition, a decreasing number of case reports include ...
+Is this result relevant? (Y/N): y
+
 Result 3:
-URL: https://www.nyc.gov/site/doh/covid/covid-19-data.page
-Title: COVID-19: Latest Data - NYC Health
-Summary: ... numbers when groups have different population sizes. Select data: By age, By race and ethnicity. Cases Hospitalizations Deaths. Cases Hospitalizations Deaths ...
+URL: https://covid19.who.int/
+Title: WHO COVID-19 dashboard: COVID-19 cases
+Summary: Source: World Health Organization. Why is COVID-19 data being presented as weekly statistics?
 Is this result relevant? (Y/N): y
 
 Result 4:
-URL: http://publichealth.lacounty.gov/media/coronavirus/data/
-Title: LA County Daily COVID-19 Data - LA County Department of Public ...
-Summary: Updated once per week on Thursdays. Overview Graphs. Overview Table. Cases/Deaths. TK-12 Schools.
+URL: https://coronavirus.jhu.edu/map.html
+Title: COVID-19 Map - Johns Hopkins Coronavirus Resource Center
+Summary: Coronavirus COVID-19 Global Cases by the Center for Systems Science and ... Case-Fatality Ratio (%) = Number recorded deaths / Number cases. Point level ...
 Is this result relevant? (Y/N): y
 
 Result 5:
-URL: https://www.cdc.gov/coronavirus/2019-ncov/covid-19-data-and-surveillance.html
-Title: Data & Surveillance | CDC
-Summary: COVID Data Basics. Hospitalizations · Deaths · Emergency Visits · Vaccination ... Reporting COVID-19 Cases · Electronic Case Reporting · COVIDTracer & COVIDTracer ...
+URL: https://covid19.ncdhhs.gov/dashboard
+Title: North Carolina Respiratory Virus Summary Dashboard | NC COVID-19
+Summary: This includes Cases and Deaths from COVID-19 and COVID-19 Vaccinations. ... When this number is high, it can mean that hospitals are strained to provide care and ...
 Is this result relevant? (Y/N): y
 
 Result 6:
-URL: https://www.mass.gov/info-details/covid-19-reporting
-Title: COVID-19 Reporting | Mass.gov
-Summary: The COVID-19 Dashboard includes data on city/town COVID-19 activity, confirmed and probable cases of COVID-19, confirmed and probable deaths related to ...
+URL: http://publichealth.lacounty.gov/media/coronavirus/data/
+Title: LA County Daily COVID-19 Data - LA County Department of Public ...
+Summary: Case counts are an underrepresentation of the true number of infections, largely due to home tests which are not reported to the Department of Public Health.
 Is this result relevant? (Y/N): y
 
 Result 7:
-URL: https://covid19.who.int/
-Title: WHO COVID-19 dashboard: COVID-19 cases
-Summary: The latest data for coronavirus (COVID-19) cases from the WHO COVID-19 dashboard.
+URL: https://www.vdh.virginia.gov/coronavirus/see-the-numbers/covid-19-in-virginia/
+Title: COVID-19 Data In Virginia - Coronavirus
+Summary: VDH COVID-19 Public Use Dataset Cases By Sex. Hospital Beds In Use. This measure looks at the average number of inpatient beds in use for COVID-19 for a given ...
 Is this result relevant? (Y/N): y
 
 Result 8:
-URL: https://coronavirus.jhu.edu/map.html
-Title: COVID-19 Map - Johns Hopkins Coronavirus Resource Center
-Summary: Coronavirus COVID-19 Global Cases by the Center for Systems Science and ... Attribute the data to the "COVID-19 Data Repository by the Center for Systems ...
+URL: https://www.nyc.gov/site/doh/covid/covid-19-data.page
+Title: COVID-19: Latest Data - NYC Health
+Summary: These data show the total number of new cases per 100,000 people over the past seven days, with the table showing the most recent value. More information ...
 Is this result relevant? (Y/N): y
 
 Result 9:
-URL: https://www.vdh.virginia.gov/coronavirus/see-the-numbers/covid-19-in-virginia/
-Title: COVID-19 Data In Virginia - Coronavirus
-Summary: COVID-19 in Virginia (past 6 months). Case Data Demographics. Demographic data is an important indicator used to understand ...
+URL: https://www.chicago.gov/city/en/sites/covid-19/home/latest-data.html
+Title: Latest Data | COVID19
+Summary: ... COVID-19. You can find our current level, along with information about how ... See how rates of COVID-19 cases, hospitalizations, and deaths differ among ...
 Is this result relevant? (Y/N): y
 
 Result 10:
-URL: https://odh.ohio.gov/know-our-programs/covid-19
-Title: Coronavirus Disease 2019 - (COVID-19) in Ohio | Ohio Department ...
-Summary: COVID-19 Reporting. The State of Ohio COVID-19 Dashboards display the most recent data reported to the Ohio Department of Health (ODH) about cases, ...
+URL: https://ourworldindata.org/covid-cases
+Title: Coronavirus (COVID-19) Cases - Our World in Data
+Summary: This page has a large number of charts on the pandemic. In the box below you can select any country you are interested in – or several, if you want to ...
 Is this result relevant? (Y/N): y
 
 ======================
 FEEDBACK SUMMARY
-Query: cases covid data
+Query: covid number cases
 Precision: 1.0
 Desired precision reached, done

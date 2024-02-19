@@ -4,7 +4,7 @@ Query: [per se]
 
 Results:
 
-(env) (base) sharmistashastry@Sharmistas-Air proj1 % python main.py AIzaSyBd3QkH6ICMU5WxD6-MrmyqC8wNTJbj_SQ 151ebbf4130c44a63 0.9 "per se"
+(env) (base) sharmistashastry@Sharmistas-Air proj1 % python main.py AIzaSyBd3QkH6ICMU5WxD6-MrmyqC8wNTJbj_SQ 151ebbf4130c44a63 0.9 "per se"  
 Parameters:
 Client key  = AIzaSyBd3QkH6ICMU5WxD6-MrmyqC8wNTJbj_SQ
 Engine key  = 151ebbf4130c44a63
@@ -78,85 +78,85 @@ Query: per se
 Precision: 0.5
 Still below the precision of 0.9
 Indexing results...
-Augmenting by: {'michelin', 'menu'}
+Augmenting by: {'center', 'michelin'}
 Parameters:
 Client key  = AIzaSyBd3QkH6ICMU5WxD6-MrmyqC8wNTJbj_SQ
 Engine key  = 151ebbf4130c44a63
-Query       = michelin menu se per
+Query       = center michelin per se
 Precision   = 0.9
 Google Search Results:
 ======================
 Result 1:
-URL: https://guide.michelin.com/us/en/new-york-state/new-york/restaurant/per-se
-Title: Per Se – New York - a MICHELIN Guide Restaurant
-Summary: Per Se – a Three Stars: Exceptional cuisine restaurant in the 2023 MICHELIN Guide USA. The MICHELIN inspectors' point of view, information on prices, ...
+URL: https://www.thomaskeller.com/perseny
+Title: Per Se | Thomas Keller Restaurant Group
+Summary: Per Se. Per Se Front Door. center. About. About; Restaurant · Team · Info & Directions · Gift Experiences · Reservations; Menus & Stories. Menus & Stories
 Is this result relevant? (Y/N): y
 
 Result 2:
-URL: https://www.thomaskeller.com/perseny
-Title: Per Se | Thomas Keller Restaurant Group
-Summary: Menus & Stories. Menus & Stories; Daily Menus · Farmers & Foragers. Wine & Cocktails. Wine ... Private Dining & Events · Per Se. Per Se Front Door. center. About.
+URL: https://en.wikipedia.org/wiki/Per_Se_(restaurant)
+Title: Per Se (restaurant) - Wikipedia
+Summary: Per Se is a New American and French restaurant located at The Shops at Columbus Circle, on the fourth floor of the Deutsche Bank Center at 10 Columbus ...
 Is this result relevant? (Y/N): y
 
 Result 3:
-URL: https://www.exploretock.com/perse
-Title: Per Se - New York, NY | Tock
-Summary: ... restaurant is Chef Keller's second three-Michelin-starred property featuring Chef's tasting menu and a vegetable tasting menu using classic French technique ...
+URL: https://www.thomaskeller.com/new-york-new-york/per-se/restaurant
+Title: Opened in 2004, Per Se is Thomas Keller's acclaimed New York ...
+Summary: ... a serene and intimate environment with spectacular views of Central Park and Columbus Circle. The restaurant is Chef Keller's second three-Michelin-starred ...
 Is this result relevant? (Y/N): y
 
 Result 4:
 URL: https://lovefoodmore.com/per-se/
 Title: My Stagè at 3 Starred Michelin Restaurant, Per Se - Lovefoodmore ...
-Summary: Sep 28, 2019 ... “Congratulations, Chef Corey would like to offer you a position as a commis at Per Se” A message I received from Elaine Smyth. She was whom I ...
+Summary: Sep 28, 2019 ... Another High-End steak house from Chef Michael Lomonaco, that has a piano bar and overlooks the central park. But the main reason why I come up ...
 Is this result relevant? (Y/N): y
 
 Result 5:
-URL: https://www.adventureaffinity.com/per-se-nyc-michelin-star-restaurant/
-Title: Per Se: NYC Michelin Star Restaurant
-Summary: Jun 28, 2015 ... Per Se now accepts reservations exactly two months ahead to the day, precisely at 10 a.m., when the reservation line opens. Otherwise, try your ...
+URL: https://www.exploretock.com/perse
+Title: Per Se - New York, NY | Tock
+Summary: ... Michelin-starred property featuring Chef's tasting menu and a vegetable tasting ... Center at Columbus Circle. Designed by Adam D. Tihany, Per Se features a ...
 Is this result relevant? (Y/N): y
 
 Result 6:
-URL: https://www.thewholeworldisaplayground.com/the-per-se-experience-saturday-afternoon-lunch-in-new-york-with-three-michelin-stars/
-Title: The Per Se Experience: Saturday Afternoon Lunch in New York with ...
-Summary: Feb 27, 2021 ... ... Per Se, one of New York's finest three Michelin Star restaurants. ... menu with one vegetable tasting menu and one Chef's tasting menu. The menus ...
-Is this result relevant? (Y/N): y
-
-Result 7:
-URL: https://www.tripadvisor.com/Restaurant_Review-g60763-d425628-Reviews-Per_Se-New_York_City_New_York.html
-Title: PER SE, New York City - Hell's Kitchen - Menu, Prices & Restaurant ...
-Summary: Three MICHELIN Stars: Exceptional cuisine, worth a special journey! Menu. TASTING OF VEGETABLES. Hass Avocado ...
-Is this result relevant? (Y/N): y
-
-Result 8:
 URL: https://www.instagram.com/perseny/
 Title: Per Se (@perseny) • Instagram photos and videos
 Summary: Per Se. रेस्टुरेन्ट. Chef Thomas Keller's 3-Star Michelin restaurant overlooking Columbus Circle & Central Park located in New York City. 10 ...
 Is this result relevant? (Y/N): y
 
+Result 7:
+URL: https://guide.michelin.com/us/en/british-columbia/ca-vancouver/restaurant/per-se-social-corner
+Title: per se Social Corner – Vancouver - a MICHELIN Guide Restaurant
+Summary: MICHELIN Guide's Point Of View. They may occupy a corner location, but this well-run establishment deserves center stage. It's the sort of place where you ...
+Is this result relevant? (Y/N): n
+
+Result 8:
+URL: https://culturalvistas.org/blog/features/per-se-trainees/
+Title: At Per Se, International Chefs Take a Seat at the Table - Cultural ...
+Summary: Sep 21, 2017 ... Per Se's main dining room. The Michelin three-starred restaurant is located across from Central Park in the Time Warner Center. Photo by ...
+Is this result relevant? (Y/N): y
+
 Result 9:
-URL: https://en.wikipedia.org/wiki/Per_Se_(restaurant)
-Title: Per Se (restaurant) - Wikipedia
-Summary: Per Se was awarded three stars ("Exceptional cuisine, worth a special journey") in the 2006 inaugural Michelin Guide to New York City, and has maintained that ...
+URL: https://ny.eater.com/2014/12/4/7310871/per-se-review-thomas-keller
+Title: Once an Icon, Per Se Is Showing Its Age - Eater NY
+Summary: Dec 4, 2014 ... But is the three Michelin-starred establishment, under the watch of chef de cuisine Eli Kaimeh and pastry chef Elwyn Bowles, still worth it?
 Is this result relevant? (Y/N): y
 
 Result 10:
-URL: https://ny.eater.com/2016/1/28/10858508/thomas-keller-per-se-response
-Title: Keller Responds to Per Se Review: 'We Are Sorry We Let You Down ...
-Summary: Jan 28, 2016 ... ... menu, our service and our standards ... Michelin star-chasers who probably don't care about reviews like this. If Per Se loses one of its Michelin ...
+URL: https://www.tripadvisor.com/Restaurant_Review-g60763-d425628-Reviews-Per_Se-New_York_City_New_York.html
+Title: PER SE, New York City - Hell's Kitchen - Menu, Prices & Restaurant ...
+Summary: Three MICHELIN Stars: Exceptional cuisine, worth a special journey! Menu. TASTING OF VEGETABLES. Hass Avocado ...
 Is this result relevant? (Y/N): y
 
 ======================
 FEEDBACK SUMMARY
-Query: michelin menu se per
-Precision: 1.0
+Query: center michelin per se
+Precision: 0.9
 Desired precision reached, done
 
 Test Case 2: Information on 23andMe cofounder Anne Wojcicki
 
 Query: [wojcicki]
 
-(dbproj) ss6950@instance-1:~/dbproj/cs-6111e/proj1$ python main.py AIzaSyBd3QkH6ICMU5WxD6-MrmyqC8wNTJbj_SQ 151ebbf4130c44a63 0.9 "wojcicki"
+(env) (base) sharmistashastry@Sharmistas-Air proj1 % python main.py AIzaSyBd3QkH6ICMU5WxD6-MrmyqC8wNTJbj_SQ 151ebbf4130c44a63 0.9 "wojcicki"
 Parameters:
 Client key  = AIzaSyBd3QkH6ICMU5WxD6-MrmyqC8wNTJbj_SQ
 Engine key  = 151ebbf4130c44a63
@@ -215,22 +215,19 @@ Is this result relevant? (Y/N): n
 Result 9:
 URL: https://abc7chicago.com/marco-troper-former-youtube-ceo-susan-wojcicki-son-dies-uc-berkeley-student/14441325/
 Title: Former YouTube CEO Susan Wojcicki's son dies at UC Berkeley ...
-Summary: 19 hours ago ... Troper was later pronounced dead by emergency responders from the Berkeley Fire Department, the university said. YouTube CEO Susan Wojcicki ...
+Summary: 1 day ago ... Esther Wojcicki, the mother of the former YouTube executive Susan Wojcicki, said in a Facebook post that the family is "devastated beyond ...
 Is this result relevant? (Y/N): n
 
 Result 10:
-URL: https://www.nbcnews.com/news/us-news/former-youtube-ceos-son-found-dead-uc-berkeley-rcna139355
-Title: Former YouTube CEO's son found dead at UC Berkeley
-Summary: 2 days ago ... The 19-year-old son of former YouTube CEO Susan Wojcicki was found dead at the University of California, Berkeley, on Tuesday, ...
+URL: https://www.forbes.com/profile/susan-wojcicki/
+Title: Susan Wojcicki
+Summary: 32 Susan Wojcicki on the 2023 America's Self-Made Women - Susan Wojcicki was CEO of Alphabet subsidiary YouTube from 2014 until February 2023. She now.
 Is this result relevant? (Y/N): n
 
 ======================
 FEEDBACK SUMMARY
 Query: wojcicki
 Precision: 0.0
-Still below the precision of 0.9
-Indexing results...
-Augmenting by:
 Below desired precision, but can no longer augment the query
 
 Test Case 3: Information on COVID-19 cases
@@ -248,31 +245,31 @@ Google Search Results:
 Result 1:
 URL: https://www.cases.org/
 Title: CASES: Home
-Summary: From court and program offices in the Bronx, Brooklyn, and Manhattan, CASES provides community-based alternatives to jail and prison.
+Summary: From court and program offices in the Bronx, Brooklyn, and Manhattan, CASES provides community-based alternatives to jail and prison. These programs address ...
 Is this result relevant? (Y/N): n
 
 Result 2:
 URL: https://www.icc-cpi.int/cases
 Title: cases | International Criminal Court
-Summary: Banda. At large. Case also involved Saleh Mohammed Jerbo Jamus but proceedings against him were terminated on 4 October 2013 following ...
+Summary: Banda. At large. Case also involved Saleh Mohammed Jerbo Jamus but proceedings against him were terminated on 4 October 2013 following his passing. On 7 March ...
 Is this result relevant? (Y/N): n
 
 Result 3:
 URL: https://www.icj-cij.org/cases
 Title: Cases | INTERNATIONAL COURT OF JUSTICE
-Summary: Main navigation ... The Court has a twofold role: to settle, in accordance with international law, legal disputes submitted to it by ...
+Summary: Main navigation ... The Court has a twofold role: to settle, in accordance with international law, legal disputes submitted to it by States (contentious cases) ...
 Is this result relevant? (Y/N): n
 
 Result 4:
 URL: https://www.worldometers.info/coronavirus/
 Title: COVID - Coronavirus Statistics - Worldometer
-Summary: Daily and weekly updated statistics tracking the number of COVID-19 cases, recovered, and deaths. Historical data with cumulative ...
+Summary: Daily and weekly updated statistics tracking the number of COVID-19 cases, recovered, and deaths. Historical data with cumulative charts, graphs, ...
 Is this result relevant? (Y/N): y
 
 Result 5:
 URL: https://www.casetify.com/
 Title: CASETiFY: Show Your Colors
-Summary: CASETiFY - We make the most sustainable yet protective phone cases for iPhone 15 / iPhone 15 Pro / iPhone 15 Plus / iPhone 15 Pro ...
+Summary: CASETiFY - We make the most sustainable yet protective phone cases for iPhone 15 / iPhone 15 Pro / iPhone 15 Plus / iPhone 15 Pro Max and tech accessories.
 Is this result relevant? (Y/N): n
 
 Result 6:
@@ -283,26 +280,26 @@ Is this result relevant? (Y/N): n
 
 Result 7:
 URL: https://acis.eoir.justice.gov/
-Title: EOIR Case Status
+Title: Immigration Court Case Status
 Summary: N/A
 Is this result relevant? (Y/N): n
 
 Result 8:
 URL: https://casesearch.courts.state.md.us/
 Title: Maryland Judiciary Case Search
-Summary: Confidential records and information will not be returned in your search results. The information displayed on this Web Site is ...
+Summary: Confidential records and information will not be returned in your search results. The information displayed on this Web Site is generated from computerized ...
 Is this result relevant? (Y/N): n
 
 Result 9:
 URL: https://acis.eoir.justice.gov/en/
 Title: Automated Case Information
-Summary: Case information from this automated resource is provided for convenience only. Documents the immigration court or Board of Immigration ...
+Summary: Case information from this automated resource is provided for convenience only. Documents the immigration court or Board of Immigration Appeals issue to you or ...
 Is this result relevant? (Y/N): n
 
 Result 10:
 URL: https://www.cdc.gov/measles/cases-outbreaks.html
 Title: Measles Cases and Outbreaks | CDC
-Summary: Measles cases in 2019 · From January 1 to December 31, 2019, 1,274* individual cases of measles were confirmed in 31 states. · This is ...
+Summary: Measles cases in 2019 · From January 1 to December 31, 2019, 1,274* individual cases of measles were confirmed in 31 states. · This is the greatest number of ...
 Is this result relevant? (Y/N): n
 
 ======================
@@ -311,76 +308,76 @@ Query: cases
 Precision: 0.1
 Still below the precision of 0.9
 Indexing results...
-Augmenting by: {'covid', 'number'}
+Augmenting by: {'covid', 'data'}
 Parameters:
 Client key  = AIzaSyBd3QkH6ICMU5WxD6-MrmyqC8wNTJbj_SQ
 Engine key  = 151ebbf4130c44a63
-Query       = covid number cases
+Query       = covid data cases
 Precision   = 0.9
 Google Search Results:
 ======================
 Result 1:
-URL: https://www.worldometers.info/coronavirus/
-Title: COVID - Coronavirus Statistics - Worldometer
-Summary: Coronavirus Cases: 703,471,314. view by country. Deaths: 6,984,533. Recovered: 674,227,426. Active Cases. 22,259,355. Currently Infected Patients. 22,223,644 ( ...
+URL: https://covid.cdc.gov/
+Title: CDC COVID Data Tracker
+Summary: In March 2022, CDC changed its data collection schedule to every 8 weeks for the nationwide COVID-19 infection-induced antibody seroprevalence (commercial ...
 Is this result relevant? (Y/N): y
 
 Result 2:
-URL: https://covid.cdc.gov/
-Title: CDC COVID Data Tracker: Home
-Summary: This webpage presents data on COVID-19 cases with information on pregnancy status reported to CDC. ... In addition, a decreasing number of case reports include ...
+URL: https://www.worldometers.info/coronavirus/
+Title: COVID - Coronavirus Statistics - Worldometer
+Summary: Coronavirus Cases: 703,480,652. view by country. Deaths: 6,984,588. Recovered: 674,227,735. Active Cases. 22,268,329. Currently Infected Patients. 22,232,618 ( ...
 Is this result relevant? (Y/N): y
 
 Result 3:
-URL: https://covid19.who.int/
-Title: WHO COVID-19 dashboard: COVID-19 cases
-Summary: Source: World Health Organization. Why is COVID-19 data being presented as weekly statistics?
+URL: https://www.nyc.gov/site/doh/covid/covid-19-data.page
+Title: COVID-19: Latest Data - NYC Health
+Summary: ... numbers when groups have different population sizes. Select data: By age, By race and ethnicity. Cases Hospitalizations Deaths. Cases Hospitalizations Deaths ...
 Is this result relevant? (Y/N): y
 
 Result 4:
-URL: https://coronavirus.jhu.edu/map.html
-Title: COVID-19 Map - Johns Hopkins Coronavirus Resource Center
-Summary: Coronavirus COVID-19 Global Cases by the Center for Systems Science and ... Case-Fatality Ratio (%) = Number recorded deaths / Number cases. Point level ...
+URL: http://publichealth.lacounty.gov/media/coronavirus/data/
+Title: LA County Daily COVID-19 Data - LA County Department of Public ...
+Summary: Updated once per week on Thursdays. Overview Graphs. Overview Table. Cases/Deaths. TK-12 Schools.
 Is this result relevant? (Y/N): y
 
 Result 5:
-URL: https://covid19.ncdhhs.gov/dashboard
-Title: North Carolina Respiratory Virus Summary Dashboard | NC COVID-19
-Summary: This includes Cases and Deaths from COVID-19 and COVID-19 Vaccinations. ... When this number is high, it can mean that hospitals are strained to provide care and ...
+URL: https://www.cdc.gov/coronavirus/2019-ncov/covid-19-data-and-surveillance.html
+Title: Data & Surveillance | CDC
+Summary: Data & Surveillance · Visit archive.cdc.gov for a historical snapshot of the COVID-19 website, capturing the end of the Federal Public Health Emergency on June ...
 Is this result relevant? (Y/N): y
 
 Result 6:
-URL: http://publichealth.lacounty.gov/media/coronavirus/data/
-Title: LA County Daily COVID-19 Data - LA County Department of Public ...
-Summary: Case counts are an underrepresentation of the true number of infections, largely due to home tests which are not reported to the Department of Public Health.
+URL: https://covid19.who.int/
+Title: WHO COVID-19 dashboard: COVID-19 cases
+Summary: The latest data for coronavirus (COVID-19) cases from the WHO COVID-19 dashboard.
 Is this result relevant? (Y/N): y
 
 Result 7:
-URL: https://www.vdh.virginia.gov/coronavirus/see-the-numbers/covid-19-in-virginia/
-Title: COVID-19 Data In Virginia - Coronavirus
-Summary: VDH COVID-19 Public Use Dataset Cases By Sex. Hospital Beds In Use. This measure looks at the average number of inpatient beds in use for COVID-19 for a given ...
+URL: https://www.dhs.wisconsin.gov/covid-19/data.htm
+Title: COVID-19: Wisconsin Data | Wisconsin Department of Health Services
+Summary: Dec 19, 2023 ... Get the latest statistics, learn how our data is collected, and more. We monitor the spread of COVID-19 by looking at hospitalizations and ...
 Is this result relevant? (Y/N): y
 
 Result 8:
-URL: https://www.nyc.gov/site/doh/covid/covid-19-data.page
-Title: COVID-19: Latest Data - NYC Health
-Summary: These data show the total number of new cases per 100,000 people over the past seven days, with the table showing the most recent value. More information ...
+URL: https://www.vdh.virginia.gov/coronavirus/see-the-numbers/covid-19-in-virginia/
+Title: COVID-19 Data In Virginia - Coronavirus
+Summary: COVID-19 in Virginia (past 6 months). Case Data Demographics. Demographic data is an important indicator used to understand ...
 Is this result relevant? (Y/N): y
 
 Result 9:
-URL: https://www.chicago.gov/city/en/sites/covid-19/home/latest-data.html
-Title: Latest Data | COVID19
-Summary: ... COVID-19. You can find our current level, along with information about how ... See how rates of COVID-19 cases, hospitalizations, and deaths differ among ...
+URL: https://www.health.pa.gov/topics/disease/coronavirus/pages/cases.aspx
+Title: COVID-19 Data for Pennsylvania
+Summary: ... COVID-19 case data is no longer required to be reported to the Department of Health, making the case data less relevant for disease tracking purposes.
 Is this result relevant? (Y/N): y
 
 Result 10:
-URL: https://ourworldindata.org/covid-cases
-Title: Coronavirus (COVID-19) Cases - Our World in Data
-Summary: This page has a large number of charts on the pandemic. In the box below you can select any country you are interested in – or several, if you want to ...
+URL: https://coronavirus.jhu.edu/map.html
+Title: COVID-19 Map - Johns Hopkins Coronavirus Resource Center
+Summary: Coronavirus COVID-19 Global Cases by the Center for Systems Science and ... Attribute the data to the "COVID-19 Data Repository by the Center for Systems ...
 Is this result relevant? (Y/N): y
 
 ======================
 FEEDBACK SUMMARY
-Query: covid number cases
+Query: covid data cases
 Precision: 1.0
 Desired precision reached, done

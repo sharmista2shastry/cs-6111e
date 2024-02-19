@@ -84,37 +84,47 @@ def calculate_tfidf(document, idf):
     # Return the TF-IDF
     return tfidf
 
-def expand_query(current_query, results):
-    # Split the current query into terms
-    original_query_terms = set(current_query.split())
-    # Stem the query terms and remove stop words
-    query_terms = [stemmer.stem(term.lower()) for term in original_query_terms if term.lower() not in stop_words]
-
-    # Select the relevant documents from the results
-    relevant_docs = [result for result in results if result.get('relevant', False)]
-    # Tokenize all documents into words, convert to lower case, and concatenate into a single string
-    all_docs = [' '.join(word_tokenize((result.get('title', '').lower() + ' ' + result.get('snippet', '').lower()))) for result in results]
-    # Calculate the inverse document frequency for all documents
+def expand_query(current_query, results, alpha=1, beta=0.75, gamma=0.15):
+    # Tokenize the current query into terms, remove stop words, and stem
+    query_terms = [word.lower() for word in word_tokenize(current_query) if word.lower() not in stop_words and word.isalnum()]
+    stemmed_query_terms = set([stemmer.stem(word) for word in query_terms])
+    
+    # Aggregate content from relevant and non-relevant documents
+    relevant_docs_text = ' '.join([result['title'] + ' ' + result['snippet'] for result in results if result.get('relevant', False)])
+    non_relevant_docs_text = ' '.join([result['title'] + ' ' + result['snippet'] for result in results if not result.get('relevant', False) and 'title' in result and 'snippet' in result])
+    
+    # Calculate TF-IDF vectors for the current query, relevant documents, and non-relevant documents
+    all_docs = [relevant_docs_text, non_relevant_docs_text] + [current_query]
     idf = calculate_idf(all_docs)
-
-    # Calculate the TF-IDF for the relevant documents
-    relevant_tfidf = Counter()
-    for doc in relevant_docs:
-        relevant_tfidf.update(calculate_tfidf(doc['title'] + ' ' + doc['snippet'], idf))
-
-    # Select the top 2 terms that are not already in the query based on their TF-IDF scores
-    new_terms = [term for term, score in relevant_tfidf.most_common() if term not in query_terms][:2]
+    query_vector = calculate_tfidf(current_query, idf)
+    relevant_vector = calculate_tfidf(relevant_docs_text, idf)
+    non_relevant_vector = calculate_tfidf(non_relevant_docs_text, idf)
     
-    # Combine the original query terms and the new terms
-    combined_terms = list(original_query_terms) + new_terms
-    # Sort the combined terms based on their relevance (TF-IDF score)
-    combined_terms_sorted = sorted(combined_terms, key=lambda term: relevant_tfidf.get(stemmer.stem(term.lower()), 0), reverse=True)
-
-    # Construct the updated query by combining the sorted terms
-    updated_query = ' '.join(combined_terms_sorted)
+    # Apply the Rocchio algorithm to adjust the query vector
+    adjusted_query_vector = {term: (alpha * query_vector.get(term, 0)) +
+                                     (beta * relevant_vector.get(term, 0)) -
+                                     (gamma * non_relevant_vector.get(term, 0))
+                             for term in set(query_vector) | set(relevant_vector) | set(non_relevant_vector)}
     
-    # Return the updated query
+    # Rank terms by their score in the adjusted query vector, excluding existing query terms
+    new_terms = sorted([(term, score) for term, score in adjusted_query_vector.items() if term not in stemmed_query_terms],
+                       key=lambda x: x[1], reverse=True)
+    
+    # Pick up to 2 new terms to add to the query
+    added_terms = [term for term, score in new_terms[:2]]
+    
+    # Combine the original query terms with the new terms
+    combined_query = query_terms + added_terms
+    
+    # Re-rank combined query terms based on their score in the adjusted query vector
+    combined_query_sorted = sorted(combined_query, key=lambda term: adjusted_query_vector.get(stemmer.stem(term), 0), reverse=True)
+    
+    # Convert the stem terms back to their original form, this step requires a mapping from stemmed terms back to original terms which is not implemented here
+    # For simplicity, we're using the combined and sorted terms directly
+    updated_query = ' '.join(combined_query_sorted)
+    
     return updated_query
+
 
 def main(api_key, engine_id, precision, query):
     while True:
@@ -126,7 +136,7 @@ def main(api_key, engine_id, precision, query):
 
         print("Google Search Results:")
         results = google_search(api_key, engine_id, query)
-        if not results:
+        if not results or len(results) < 10:
             print("No results. Exiting...")
             break
         display_results(results)
@@ -140,9 +150,6 @@ def main(api_key, engine_id, precision, query):
             print("Desired precision reached, done")
             return
         elif precision_at_10 == 0:
-            print(f"Still below the precision of {precision}")
-            print("Indexing results...")
-            print("Augmenting by:")
             print("Below desired precision, but can no longer augment the query")
             return
         else:
@@ -160,9 +167,11 @@ if __name__ == "__main__":
     api_key = sys.argv[1]
     engine_id = sys.argv[2]
     precision = float(sys.argv[3])
+
     if precision < 0 or precision > 1:
         print("Precision must be between 0 and 1")
         sys.exit(1)
+
     query = sys.argv[4]
 
     main(api_key, engine_id, precision, query)

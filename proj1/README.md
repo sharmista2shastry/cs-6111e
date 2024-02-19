@@ -26,61 +26,57 @@ python main.py <google api key> <google engine id> <precision> <query>
 
 ## Internal Design
 
-This Python script is designed to perform a Google search using a provided API key and engine ID, display the results, ask the user for feedback on the relevance of the results, and then use this feedback to refine the search query and repeat the process. The goal is to improve the precision of the search results over multiple iterations.
+This Python script is designed to perform a Google search, display the results, ask the user for feedback on the relevance of the results, and refine the search query based on the feedback. The script uses the Rocchio algorithm for query refinement.
 
-The main high-level components of the script are:
+Here are the main high-level components of the script:
 
-1. Google Search Function (google_search): This function sends a GET request to the Google Custom Search JSON API and returns the top 10 search results.
+- Google Search Function: The google_search function performs a Google search using the provided API key, engine ID, and query, and returns the top 10 results.
 
-2. Precision Calculation Function (calculate_precision): This function calculates the precision of the search results based on the user's feedback.
+- Precision Calculation Function: The calculate_precision function calculates the precision of the search results based on user feedback.
 
-3. Results Display and Feedback Function (display_results): This function displays the search results and asks the user for feedback on their relevance.
+- Results Display and Feedback Function: The display_results function displays the search results and asks the user for feedback on their relevance.
 
-4. Term Frequency Calculation Function (calculate_tf): This function calculates the term frequency for a given document.
+- Text Processing Functions: The calculate_tf, calculate_idf, and calculate_tfidf functions perform text processing tasks such as term frequency calculation, inverse document frequency calculation, and TF-IDF calculation.
 
-5. Inverse Document Frequency Calculation Function (calculate_idf): This function calculates the inverse document frequency across a set of documents.
+- Query Expansion Function: The expand_query function uses the Rocchio algorithm to refine the search query based on user feedback.
 
-6. TF-IDF Calculation Function (calculate_tfidf): This function calculates the term frequency-inverse document frequency (TF-IDF) for a given document.
-
-7. Query Expansion Function (expand_query): This function expands the search query using the relevant documents from the previous iteration.
-
-8. Main Function (main): This function performs the search and query expansion process in a loop until the desired precision is reached or no more results are found.
+- Main Function: The main function orchestrates the entire process. It performs a Google search, displays the results, collects user feedback, calculates the precision, and refines the query until the desired precision is reached or no more refinement is possible.
 
 The script uses the following external libraries:
 
-1. sys: This standard Python library is used to access the command-line arguments.
+- sys: This standard Python library is used to access command-line arguments.
 
-2. requests: This library is used to send HTTP requests to the Google Custom Search JSON API.
+- requests: This library is used to send HTTP requests to the Google Custom Search JSON API.
 
-3. nltk: The Natural Language Toolkit (NLTK) is used for word tokenization, stop word removal, and stemming. The script uses the Punkt tokenizer for word tokenization, the English stop words list, and the Porter stemmer.
+- nltk: The Natural Language Toolkit is used for text processing tasks such as tokenization, stop word removal, and stemming.
 
-4. collections: This standard Python library is used for its Counter class, which is a dictionary subclass for counting hashable objects.
+- collections: This standard Python library is used for its Counter class, which is a dictionary subclass for counting hashable objects.
 
-5. math: This standard Python library is used for its log function, which is used in the calculation of inverse document frequency.
+- math: This standard Python library is used for mathematical operations such as logarithm calculation.
 
 ## Query Modification Method
 
-The query modification method is implemented in the expand_query function. This function goes through a process of selecting and adding new keywords to the original query to improve search results. The goal is to select the most relevant keywords from the documents that were marked as relevant in the previous iteration.
+The query modification method in this script is implemented in the expand_query function. It uses the Rocchio algorithm, a classic method in information retrieval for query refinement. The Rocchio algorithm adjusts the original query vector by moving it closer to the centroid of relevant documents and away from the centroid of non-relevant documents.
 
-Here's a detailed description of how the expand_query function works:
+Here's a brief description of the expand_query function:
 
-1. Tokenization and Stemming: The function first tokenizes the original query into individual terms, converts them to lower case, and stems them using the Porter stemmer. This is done to normalize the terms for comparison with the terms in the documents.
+- Parse the current query: The function first tokenizes the current query into terms, removes stop words, and applies stemming. The result is a set of query terms.
 
-2. Relevant Documents Selection: The function then selects the documents that were marked as relevant in the previous iteration. This is based on the assumption that these documents contain the most relevant terms for the query.
+- Aggregate content from relevant and non-relevant documents: The function aggregates the title and snippet of relevant and non-relevant documents separately.
 
-3. Document Tokenization: All documents, including both relevant and non-relevant ones, are tokenized into words, converted to lower case, and concatenated into a single string. This is done to prepare the documents for the calculation of inverse document frequency (IDF).
+- Calculate TF-IDF vectors: The function calculates the TF-IDF (Term Frequency-Inverse Document Frequency) vectors for the current query, relevant documents, and non-relevant documents. TF-IDF is a numerical statistic that reflects how important a word is to a document in a collection or corpus.
 
-4. IDF Calculation: The function calculates the IDF for all documents. IDF is a measure of how much information a given word provides, i.e., if it's common or rare across all documents. The IDF is used later to calculate the term frequency-inverse document frequency (TF-IDF).
+- Apply the Rocchio algorithm: The function applies the Rocchio algorithm to adjust the query vector. The adjusted query vector is a weighted sum of the original query vector, the vector of relevant documents, and the vector of non-relevant documents. The weights are given by the parameters alpha, beta, and gamma, which can be adjusted to control the influence of each component.
 
-5. TF-IDF Calculation: The function calculates the TF-IDF for the relevant documents. TF-IDF is a numerical statistic that reflects how important a word is to a document in a collection or corpus. It's the product of two statistics, term frequency (TF) and IDF.
+- Rank terms: The function ranks terms by their score in the adjusted query vector, excluding the terms that are already in the original query.
 
-6. New Terms Selection: The function selects the top 2 terms that are not already in the query based on their TF-IDF scores. These are the terms that are most relevant to the query and are added to the original query terms.
+- Add new terms to the query: The function picks up to 2 new terms with the highest scores to add to the query.
 
-7. Query Terms Sorting: The function sorts the combined terms (original query terms and new terms) based on their relevance, which is determined by their TF-IDF scores. The terms with higher scores are considered more relevant and are placed earlier in the query.
+- Combine and re-rank query terms: The function combines the original query terms with the new terms, and re-ranks them based on their score in the adjusted query vector to ensure that we have the best word order.
 
-8. Updated Query Construction: Finally, the function constructs the updated query by combining the sorted terms. This updated query is used for the next iteration of the search.
+- Update the query: The function updates the query with the combined and re-ranked terms.
 
-This query modification method is designed to improve the precision of the search results over multiple iterations by continuously refining the query based on user feedback.
+The order of the query words in each round is determined by their score in the adjusted query vector. The terms with higher scores are placed earlier in the query. This is done in the step where the combined query terms are re-ranked based on their score in the adjusted query vector.
 
 ## Google Custom Search Engine JSON API Key and Engine ID
 

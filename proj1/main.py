@@ -13,6 +13,7 @@ nltk.download('stopwords', quiet=True)
 
 # Initialize stop words and stemmer
 # Stop words are common words that are often removed during text processing
+nltk.download('stopwords', quiet=True)
 stop_words = set(stopwords.words('english'))
 # The Porter stemmer is a simple, rule-based stemmer for English
 stemmer = PorterStemmer()

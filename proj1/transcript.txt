@@ -1,0 +1,383 @@
+Test Case 1: Information on Per Se restaurant in New York City
+
+Query: [per se]
+
+Results:
+
+(env) (base) sharmistashastry@Sharmistas-Air proj1 % python main.py AIzaSyBd3QkH6ICMU5WxD6-MrmyqC8wNTJbj_SQ 151ebbf4130c44a63 0.9 "per se"  
+Parameters:
+Client key  = AIzaSyBd3QkH6ICMU5WxD6-MrmyqC8wNTJbj_SQ
+Engine key  = 151ebbf4130c44a63
+Query       = per se
+Precision   = 0.9
+Google Search Results:
+======================
+Result 1:
+URL: https://www.thomaskeller.com/perseny
+Title: Per Se | Thomas Keller Restaurant Group
+Summary: Per Se. Per Se Front Door. center. About. About; Restaurant · Team · Info & Directions · Gift Experiences · Reservations; Menus & Stories. Menus & Stories
+Is this result relevant? (Y/N): y
+
+Result 2:
+URL: https://www.merriam-webster.com/dictionary/perse
+Title: Perse Definition & Meaning - Merriam-Webster
+Summary: The meaning of PERSE is of a dark grayish blue resembling indigo. How to use perse in a sentence. Did you know?
+Is this result relevant? (Y/N): n
+
+Result 3:
+URL: https://www.exploretock.com/perse
+Title: Per Se - New York, NY | Tock
+Summary: Opened in 2004, Per Se is Thomas Keller's acclaimed interpretation of The French Laundry in the Deutsche Bank Center at Columbus Circle.
+Is this result relevant? (Y/N): y
+
+Result 4:
+URL: https://guide.michelin.com/us/en/new-york-state/new-york/restaurant/per-se
+Title: Per Se – New York - a MICHELIN Guide Restaurant
+Summary: Per Se – a Three Stars: Exceptional cuisine restaurant in the 2023 MICHELIN Guide USA. The MICHELIN inspectors' point of view, information on prices, ...
+Is this result relevant? (Y/N): y
+
+Result 5:
+URL: https://www.instagram.com/perseny/
+Title: Per Se (@perseny) • Instagram photos and videos
+Summary: 269K Followers, 199 Following, 943 Posts - See Instagram photos and videos from Per Se (@perseny)
+Is this result relevant? (Y/N): y
+
+Result 6:
+URL: https://en.wikipedia.org/wiki/wikt:per_se
+Title: per se - Wiktionary, the free dictionary
+Summary: From Latin per sē (“by itself”), from per (“by, through”) and sē (“itself, himself, herself, themselves”).
+Is this result relevant? (Y/N): n
+
+Result 7:
+URL: https://dictionary.cambridge.org/us/dictionary/english/per-se
+Title: PER SE | definition in the Cambridge English Dictionary
+Summary: PER SE meaning: 1. by or of itself: 2. by or of itself: 3. by or of itself: . Learn more.
+Is this result relevant? (Y/N): n
+
+Result 8:
+URL: https://en.wikipedia.org/wiki/Per_Se_(restaurant)
+Title: Per Se (restaurant) - Wikipedia
+Summary: Per Se (restaurant) ... Per Se is a New American and French restaurant located at The Shops at Columbus Circle, on the fourth floor of the Deutsche Bank Center at ...
+Is this result relevant? (Y/N): y
+
+Result 9:
+URL: https://www.jamesperse.com/
+Title: James Perse Los Angeles
+Summary: James Perse. Women. Women; Apparel. Apparel Main Menu; New Arrivals · At Home Essentials · Classics · Dresses/Jumpsuits · Sweaters/Cashmere · T-shirts.
+Is this result relevant? (Y/N): n
+
+Result 10:
+URL: https://www.law.cornell.edu/wex/per_se
+Title: per se | Wex | US Law | LII / Legal Information Institute
+Summary: Primary tabs. Latin for “by itself,” in other words, inherently. For example, in tort law, a statutory violation is negligence per se. One of the elements a ...
+Is this result relevant? (Y/N): n
+
+======================
+FEEDBACK SUMMARY
+Query: per se
+Precision: 0.5
+Still below the precision of 0.9
+Indexing results...
+Augmenting by: {'center', 'michelin'}
+Parameters:
+Client key  = AIzaSyBd3QkH6ICMU5WxD6-MrmyqC8wNTJbj_SQ
+Engine key  = 151ebbf4130c44a63
+Query       = center michelin per se
+Precision   = 0.9
+Google Search Results:
+======================
+Result 1:
+URL: https://www.thomaskeller.com/perseny
+Title: Per Se | Thomas Keller Restaurant Group
+Summary: Per Se. Per Se Front Door. center. About. About; Restaurant · Team · Info & Directions · Gift Experiences · Reservations; Menus & Stories. Menus & Stories
+Is this result relevant? (Y/N): y
+
+Result 2:
+URL: https://en.wikipedia.org/wiki/Per_Se_(restaurant)
+Title: Per Se (restaurant) - Wikipedia
+Summary: Per Se is a New American and French restaurant located at The Shops at Columbus Circle, on the fourth floor of the Deutsche Bank Center at 10 Columbus ...
+Is this result relevant? (Y/N): y
+
+Result 3:
+URL: https://www.thomaskeller.com/new-york-new-york/per-se/restaurant
+Title: Opened in 2004, Per Se is Thomas Keller's acclaimed New York ...
+Summary: ... a serene and intimate environment with spectacular views of Central Park and Columbus Circle. The restaurant is Chef Keller's second three-Michelin-starred ...
+Is this result relevant? (Y/N): y
+
+Result 4:
+URL: https://lovefoodmore.com/per-se/
+Title: My Stagè at 3 Starred Michelin Restaurant, Per Se - Lovefoodmore ...
+Summary: Sep 28, 2019 ... Another High-End steak house from Chef Michael Lomonaco, that has a piano bar and overlooks the central park. But the main reason why I come up ...
+Is this result relevant? (Y/N): y
+
+Result 5:
+URL: https://www.exploretock.com/perse
+Title: Per Se - New York, NY | Tock
+Summary: ... Michelin-starred property featuring Chef's tasting menu and a vegetable tasting ... Center at Columbus Circle. Designed by Adam D. Tihany, Per Se features a ...
+Is this result relevant? (Y/N): y
+
+Result 6:
+URL: https://www.instagram.com/perseny/
+Title: Per Se (@perseny) • Instagram photos and videos
+Summary: Per Se. रेस्टुरेन्ट. Chef Thomas Keller's 3-Star Michelin restaurant overlooking Columbus Circle & Central Park located in New York City. 10 ...
+Is this result relevant? (Y/N): y
+
+Result 7:
+URL: https://guide.michelin.com/us/en/british-columbia/ca-vancouver/restaurant/per-se-social-corner
+Title: per se Social Corner – Vancouver - a MICHELIN Guide Restaurant
+Summary: MICHELIN Guide's Point Of View. They may occupy a corner location, but this well-run establishment deserves center stage. It's the sort of place where you ...
+Is this result relevant? (Y/N): n
+
+Result 8:
+URL: https://culturalvistas.org/blog/features/per-se-trainees/
+Title: At Per Se, International Chefs Take a Seat at the Table - Cultural ...
+Summary: Sep 21, 2017 ... Per Se's main dining room. The Michelin three-starred restaurant is located across from Central Park in the Time Warner Center. Photo by ...
+Is this result relevant? (Y/N): y
+
+Result 9:
+URL: https://ny.eater.com/2014/12/4/7310871/per-se-review-thomas-keller
+Title: Once an Icon, Per Se Is Showing Its Age - Eater NY
+Summary: Dec 4, 2014 ... But is the three Michelin-starred establishment, under the watch of chef de cuisine Eli Kaimeh and pastry chef Elwyn Bowles, still worth it?
+Is this result relevant? (Y/N): y
+
+Result 10:
+URL: https://www.tripadvisor.com/Restaurant_Review-g60763-d425628-Reviews-Per_Se-New_York_City_New_York.html
+Title: PER SE, New York City - Hell's Kitchen - Menu, Prices & Restaurant ...
+Summary: Three MICHELIN Stars: Exceptional cuisine, worth a special journey! Menu. TASTING OF VEGETABLES. Hass Avocado ...
+Is this result relevant? (Y/N): y
+
+======================
+FEEDBACK SUMMARY
+Query: center michelin per se
+Precision: 0.9
+Desired precision reached, done
+
+Test Case 2: Information on 23andMe cofounder Anne Wojcicki
+
+Query: [wojcicki]
+
+(env) (base) sharmistashastry@Sharmistas-Air proj1 % python main.py AIzaSyBd3QkH6ICMU5WxD6-MrmyqC8wNTJbj_SQ 151ebbf4130c44a63 0.9 "wojcicki"
+Parameters:
+Client key  = AIzaSyBd3QkH6ICMU5WxD6-MrmyqC8wNTJbj_SQ
+Engine key  = 151ebbf4130c44a63
+Query       = wojcicki
+Precision   = 0.9
+Google Search Results:
+======================
+Result 1:
+URL: https://en.wikipedia.org/wiki/Susan_Wojcicki
+Title: Susan Wojcicki - Wikipedia
+Summary: Susan Wojcicki ... Susan Diane Wojcicki (/wʊˈtʃɪtski/ woo-CHITS-kee; born July 5, 1968) is an American business executive who was the chief executive officer (CEO) ...
+Is this result relevant? (Y/N): n
+
+Result 2:
+URL: https://twitter.com/susanwojcicki?lang=en
+Title: Susan Wojcicki (@SusanWojcicki) / X
+Summary: Susan Wojcicki's posts ... 's team and innovative solutions in sustainability and security to enable transparency and accountability for countries, communities ...
+Is this result relevant? (Y/N): n
+
+Result 3:
+URL: https://www.instagram.com/susanwojcicki/?hl=en
+Title: Susan Wojcicki (@susanwojcicki) • Instagram photos and videos
+Summary: 55K Followers, 124 Following, 40 Posts - See Instagram photos and videos from Susan Wojcicki (@susanwojcicki)
+Is this result relevant? (Y/N): n
+
+Result 4:
+URL: https://www.facebook.com/esther.wojcicki/
+Title: Esther Wojcicki
+Summary: Psi and was thriving academically. At home, he would tell us endless stories of his life and friends at Berkeley. Marco's life was cut too short. And we are all
+Is this result relevant? (Y/N): n
+
+Result 5:
+URL: https://www.instagram.com/heywoj/?hl=en
+Title: Esther Wojcicki (@heywoj) • Instagram photos and videos
+Summary: 7661 Followers, 1578 Following, 1870 Posts - See Instagram photos and videos from Esther Wojcicki (@heywoj)
+Is this result relevant? (Y/N): n
+
+Result 6:
+URL: https://www.linkedin.com/in/susan-wojcicki-b136a99
+Title: Susan Wojcicki - YouTube | LinkedIn
+Summary: View Susan Wojcicki's profile on LinkedIn, the world's largest professional community. Susan has 2 jobs listed on their profile. See the complete profile on ...
+Is this result relevant? (Y/N): n
+
+Result 7:
+URL: https://people.com/son-of-susan-wojcicki-found-dead-at-uc-berkeley-8584597
+Title: Son of Former YouTube CEO Susan Wojcicki Found Dead at UC ...
+Summary: 2 days ago ... Marco Troper, a UC Berkeley student who was the 19-year-old son of former YouTube CEO Susan Wojcicki, was found dead on his college campus ...
+Is this result relevant? (Y/N): n
+
+Result 8:
+URL: https://www.linkedin.com/in/ed-wojcicki-bb02abb
+Title: Ed Wojcicki - Retired... but Consulting and Writing - Retired | LinkedIn
+Summary: Author/co-author of three books, freelance writer and editor, author of a wide range of articles on topics ranging from Illinois government to Henri Nouwen to ...
+Is this result relevant? (Y/N): n
+
+Result 9:
+URL: https://abc7chicago.com/marco-troper-former-youtube-ceo-susan-wojcicki-son-dies-uc-berkeley-student/14441325/
+Title: Former YouTube CEO Susan Wojcicki's son dies at UC Berkeley ...
+Summary: 1 day ago ... Esther Wojcicki, the mother of the former YouTube executive Susan Wojcicki, said in a Facebook post that the family is "devastated beyond ...
+Is this result relevant? (Y/N): n
+
+Result 10:
+URL: https://www.forbes.com/profile/susan-wojcicki/
+Title: Susan Wojcicki
+Summary: 32 Susan Wojcicki on the 2023 America's Self-Made Women - Susan Wojcicki was CEO of Alphabet subsidiary YouTube from 2014 until February 2023. She now.
+Is this result relevant? (Y/N): n
+
+======================
+FEEDBACK SUMMARY
+Query: wojcicki
+Precision: 0.0
+Below desired precision, but can no longer augment the query
+
+Test Case 3: Information on COVID-19 cases
+
+Query: [cases]
+
+(env) (base) sharmistashastry@Sharmistas-Air proj1 % python main.py AIzaSyBd3QkH6ICMU5WxD6-MrmyqC8wNTJbj_SQ 151ebbf4130c44a63 0.9 "cases"
+Parameters:
+Client key  = AIzaSyBd3QkH6ICMU5WxD6-MrmyqC8wNTJbj_SQ
+Engine key  = 151ebbf4130c44a63
+Query       = cases
+Precision   = 0.9
+Google Search Results:
+======================
+Result 1:
+URL: https://www.cases.org/
+Title: CASES: Home
+Summary: From court and program offices in the Bronx, Brooklyn, and Manhattan, CASES provides community-based alternatives to jail and prison. These programs address ...
+Is this result relevant? (Y/N): n
+
+Result 2:
+URL: https://www.icc-cpi.int/cases
+Title: cases | International Criminal Court
+Summary: Banda. At large. Case also involved Saleh Mohammed Jerbo Jamus but proceedings against him were terminated on 4 October 2013 following his passing. On 7 March ...
+Is this result relevant? (Y/N): n
+
+Result 3:
+URL: https://www.icj-cij.org/cases
+Title: Cases | INTERNATIONAL COURT OF JUSTICE
+Summary: Main navigation ... The Court has a twofold role: to settle, in accordance with international law, legal disputes submitted to it by States (contentious cases) ...
+Is this result relevant? (Y/N): n
+
+Result 4:
+URL: https://www.worldometers.info/coronavirus/
+Title: COVID - Coronavirus Statistics - Worldometer
+Summary: Daily and weekly updated statistics tracking the number of COVID-19 cases, recovered, and deaths. Historical data with cumulative charts, graphs, ...
+Is this result relevant? (Y/N): y
+
+Result 5:
+URL: https://www.casetify.com/
+Title: CASETiFY: Show Your Colors
+Summary: CASETiFY - We make the most sustainable yet protective phone cases for iPhone 15 / iPhone 15 Pro / iPhone 15 Plus / iPhone 15 Pro Max and tech accessories.
+Is this result relevant? (Y/N): n
+
+Result 6:
+URL: https://www.oyez.org/cases
+Title: 2023-2024 Term | Oyez
+Summary: US Supreme Court cases from the 2023-2024 term.
+Is this result relevant? (Y/N): n
+
+Result 7:
+URL: https://acis.eoir.justice.gov/
+Title: Immigration Court Case Status
+Summary: N/A
+Is this result relevant? (Y/N): n
+
+Result 8:
+URL: https://casesearch.courts.state.md.us/
+Title: Maryland Judiciary Case Search
+Summary: Confidential records and information will not be returned in your search results. The information displayed on this Web Site is generated from computerized ...
+Is this result relevant? (Y/N): n
+
+Result 9:
+URL: https://acis.eoir.justice.gov/en/
+Title: Automated Case Information
+Summary: Case information from this automated resource is provided for convenience only. Documents the immigration court or Board of Immigration Appeals issue to you or ...
+Is this result relevant? (Y/N): n
+
+Result 10:
+URL: https://www.cdc.gov/measles/cases-outbreaks.html
+Title: Measles Cases and Outbreaks | CDC
+Summary: Measles cases in 2019 · From January 1 to December 31, 2019, 1,274* individual cases of measles were confirmed in 31 states. · This is the greatest number of ...
+Is this result relevant? (Y/N): n
+
+======================
+FEEDBACK SUMMARY
+Query: cases
+Precision: 0.1
+Still below the precision of 0.9
+Indexing results...
+Augmenting by: {'covid', 'data'}
+Parameters:
+Client key  = AIzaSyBd3QkH6ICMU5WxD6-MrmyqC8wNTJbj_SQ
+Engine key  = 151ebbf4130c44a63
+Query       = covid data cases
+Precision   = 0.9
+Google Search Results:
+======================
+Result 1:
+URL: https://covid.cdc.gov/
+Title: CDC COVID Data Tracker
+Summary: In March 2022, CDC changed its data collection schedule to every 8 weeks for the nationwide COVID-19 infection-induced antibody seroprevalence (commercial ...
+Is this result relevant? (Y/N): y
+
+Result 2:
+URL: https://www.worldometers.info/coronavirus/
+Title: COVID - Coronavirus Statistics - Worldometer
+Summary: Coronavirus Cases: 703,480,652. view by country. Deaths: 6,984,588. Recovered: 674,227,735. Active Cases. 22,268,329. Currently Infected Patients. 22,232,618 ( ...
+Is this result relevant? (Y/N): y
+
+Result 3:
+URL: https://www.nyc.gov/site/doh/covid/covid-19-data.page
+Title: COVID-19: Latest Data - NYC Health
+Summary: ... numbers when groups have different population sizes. Select data: By age, By race and ethnicity. Cases Hospitalizations Deaths. Cases Hospitalizations Deaths ...
+Is this result relevant? (Y/N): y
+
+Result 4:
+URL: http://publichealth.lacounty.gov/media/coronavirus/data/
+Title: LA County Daily COVID-19 Data - LA County Department of Public ...
+Summary: Updated once per week on Thursdays. Overview Graphs. Overview Table. Cases/Deaths. TK-12 Schools.
+Is this result relevant? (Y/N): y
+
+Result 5:
+URL: https://www.cdc.gov/coronavirus/2019-ncov/covid-19-data-and-surveillance.html
+Title: Data & Surveillance | CDC
+Summary: Data & Surveillance · Visit archive.cdc.gov for a historical snapshot of the COVID-19 website, capturing the end of the Federal Public Health Emergency on June ...
+Is this result relevant? (Y/N): y
+
+Result 6:
+URL: https://covid19.who.int/
+Title: WHO COVID-19 dashboard: COVID-19 cases
+Summary: The latest data for coronavirus (COVID-19) cases from the WHO COVID-19 dashboard.
+Is this result relevant? (Y/N): y
+
+Result 7:
+URL: https://www.dhs.wisconsin.gov/covid-19/data.htm
+Title: COVID-19: Wisconsin Data | Wisconsin Department of Health Services
+Summary: Dec 19, 2023 ... Get the latest statistics, learn how our data is collected, and more. We monitor the spread of COVID-19 by looking at hospitalizations and ...
+Is this result relevant? (Y/N): y
+
+Result 8:
+URL: https://www.vdh.virginia.gov/coronavirus/see-the-numbers/covid-19-in-virginia/
+Title: COVID-19 Data In Virginia - Coronavirus
+Summary: COVID-19 in Virginia (past 6 months). Case Data Demographics. Demographic data is an important indicator used to understand ...
+Is this result relevant? (Y/N): y
+
+Result 9:
+URL: https://www.health.pa.gov/topics/disease/coronavirus/pages/cases.aspx
+Title: COVID-19 Data for Pennsylvania
+Summary: ... COVID-19 case data is no longer required to be reported to the Department of Health, making the case data less relevant for disease tracking purposes.
+Is this result relevant? (Y/N): y
+
+Result 10:
+URL: https://coronavirus.jhu.edu/map.html
+Title: COVID-19 Map - Johns Hopkins Coronavirus Resource Center
+Summary: Coronavirus COVID-19 Global Cases by the Center for Systems Science and ... Attribute the data to the "COVID-19 Data Repository by the Center for Systems ...
+Is this result relevant? (Y/N): y
+
+======================
+FEEDBACK SUMMARY
+Query: covid data cases
+Precision: 1.0
+Desired precision reached, done

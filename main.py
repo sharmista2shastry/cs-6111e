@@ -8,7 +8,7 @@ from collections import Counter
 import math
 
 nltk.download('punkt', quiet=True)
-nltk.download('stopwords', quiet=True)
+# nltk.download('stopwords', quiet=True)
 
 # Initialize stop words and stemmer
 stop_words = set(stopwords.words('english'))

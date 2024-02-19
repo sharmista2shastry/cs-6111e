@@ -75,13 +75,14 @@ def rocchio_expand_query(current_query, results, alpha=1.2, beta=0.80, gamma=0.1
     return updated_query
 
 def main(api_key, engine_id, precision, query):
-    print("Parameters:")
-    print(f"Client key  = {api_key}")
-    print(f"Engine key  = {engine_id}")
-    print(f"Query       = {query}")
-    print(f"Precision   = {precision}")
-
     while True:
+        print("Parameters:")
+        print(f"Client key  = {api_key}")
+        print(f"Engine key  = {engine_id}")
+        print(f"Query       = {query}")
+        print(f"Precision   = {precision}")
+
+    
         print("Google Search Results:")
         results = google_search(api_key, engine_id, query)
         if not results:
@@ -98,14 +99,19 @@ def main(api_key, engine_id, precision, query):
             print("Desired precision reached, done")
             return
         elif precision_at_10 == 0:
-            print("No relevant results. Exiting...")
+            print(f"Still below the precision of {precision}")
+            print("Indexing results...")
+            print("Augmenting by:")
+            print("Below desired precision, but can no longer augment the query")
             return
         else:
             new_query = rocchio_expand_query(query, results)
-            print("Still below the desired precision")
+            print(f"Still below the precision of {precision}")
+            print("Indexing results...")
             print("Augmenting by:", set(new_query.split()) - set(query.split()))
             query = new_query  # Update the query for the next iteration
-            print(f"New query: {query}")
+            
+    
 
 if __name__ == "__main__":
     if len(sys.argv) != 5:

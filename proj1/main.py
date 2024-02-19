@@ -9,6 +9,7 @@ import math
 
 # Download the Punkt tokenizer used by NLTK for word tokenization
 nltk.download('punkt', quiet=True)
+nltk.download('stopwords', quiet=True)
 
 # Initialize stop words and stemmer
 # Stop words are common words that are often removed during text processing

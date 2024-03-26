@@ -2,6 +2,8 @@ import sys
 import requests
 from bs4 import BeautifulSoup, Comment
 import spacy
+from spacy.tokens import Span
+from collections import defaultdict
 
 # Function to query Google Custom Search Engine and retrieve URLs for the top-10 webpages
 def google_search(api_key, engine_id, query):
@@ -22,7 +24,7 @@ def retrieve_webpage(url):
         # may still need to fix extraction method as character number is a bit off
         response = requests.get(url)
         if response.status_code == 200:
-            soup = BeautifulSoup(response.text, 'html.parser')
+            soup = BeautifulSoup(response.content, 'html.parser')
             for script in soup(["script", "style"]):
                 script.extract()
             text = soup.get_text(separator='\n', strip=True)
@@ -40,9 +42,9 @@ def retrieve_webpage(url):
 def spacy_function(text):
     nlp = spacy.load("en_core_web_sm")
     doc = nlp(text)
-    sentences = [sent.text for sent in doc.sents]
-    entities = [(ent.text, ent.label_) for ent in doc.ents]
-    return sentences, entities
+    # sentences = [sent.text for sent in doc.sents]
+    # entities = [(ent.text, ent.label_) for ent in doc.ents]
+    return doc
         
 
 # function that finds the corresponding relation to input int
@@ -90,10 +92,19 @@ def main(method, api_key, engine_id, gemini, relation, threshold, query, k_tuple
                 webpage_length = len(webpage_content)
                 print(f"\tWebpage length (num characters): {webpage_length}")
                 print("\tAnnotating the webpage using spacy...")
-                sentences, entities = spacy_function(webpage_content)
-                print(f"\tExtracted {len(sentences)} sentences. Processing each sentence one by one to check for the presence of the right pair of named entity types; if so, will run the second pipeline ...")
+                doc = spacy_function(webpage_content)
+                # print(f"\tExtracted {len(sentences)} sentences. Processing each sentence one by one to check for the presence of the right pair of named entity types; if so, will run the second pipeline ...")
+                
 
+                entities_of_interest = ["ORGANIZATION", "PERSON"] 
 
+                from spanbert import SpanBERT 
+                spanbert = SpanBERT("./pretrained_spanbert")  
+
+                # Extract relations
+                from spacy_help_functions import extract_relations
+                relations = extract_relations(doc, spanbert, entities_of_interest)
+                print("Relations: {}".format(dict(relations)))
         # Further processing steps (entity recognition, relation extraction) will go here
 
       

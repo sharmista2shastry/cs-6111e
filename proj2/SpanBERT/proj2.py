@@ -8,6 +8,7 @@ from spanbert import SpanBERT
 from spacy_help_functions import extract_relations
 import os
 import google.generativeai as genai
+import re
 
 # Load pre-trained SpanBERT model
 spanbert = SpanBERT("./pretrained_spanbert")
@@ -27,7 +28,7 @@ def google_search(api_key, engine_id, query):
 # Function to retrieve webpage content and extract plain text using BeautifulSoup
 def retrieve_webpage(url):
     try:
-        response = requests.get(url)
+        response = requests.get(url, timeout=10)
 
         # This will raise an HTTPError for bad responses
         response.raise_for_status()
@@ -48,8 +49,6 @@ def retrieve_webpage(url):
         
         return text
 
-    except requests.HTTPError as e:
-        print(f"HTTP error retrieving webpage: {e}")
     except requests.RequestException as e:
         print(f"Error retrieving webpage: {e}")
     return None
@@ -73,24 +72,31 @@ def is_valid_pair(pair, relation_type):
     else:
         return False
 
-def run_spanbert(doc, spanbert, relation_type):
+def run_spanbert(doc, spanbert, relation_type, threshold, query):
+    # Define the entities of interest for each relation type
+    relation_entities = {
+        "Schools_Attended": ["PERSON", "ORG"],
+        "Work_For": ["PERSON", "ORG"],
+        "Live_In": ["PERSON", "LOC", "GPE", "FAC"],
+        "Top_Member_Employees": ["ORG", "PERSON"]
+    }
+
     # Extract relations using the helper functions and SpanBERT model
-    entities_of_interest = ["ORGANIZATION", "PERSON", "LOCATION", "CITY", "STATE_OR_PROVINCE", "COUNTRY"]
-    entity_pairs = extract_relations(doc, spanbert, relation_type, entities_of_interest)
+    entities_of_interest = relation_entities[relation_type]
+    relations = extract_relations(doc, spanbert, entities_of_interest)
 
-    # If no entity pairs were found, return an empty list
-    if not entity_pairs:
-        print("No entity pairs found.")
-        return []
+    # Filter the relations based on the relation_type and the extraction confidence
+    filtered_relations = [(relation[0], (relation[1], relation[2]), relation[3]) for relation in relations if relation[2] == relation_type and relation[3] >= threshold]
 
-    # Run SpanBERT on the entity pairs
-    relations = spanbert.predict(entity_pairs)
-    return relations
+    # Post-process the relations based on the query
+    post_processed_relations = [(relation[0], relation[1], relation[2]) for relation in filtered_relations if query in relation[0].text or query in relation[1][0].text or query in relation[1][1].text]
 
-# Generate response to prompt
-def get_gemini_completion(prompt, model_name, max_tokens, temperature, top_p, top_k, api_key):
+    return post_processed_relations, len(list(doc.sents))
+
+def get_gemini_completion(prompt, model_name, max_tokens, temperature, top_p, top_k, gemini):
     # Initialize a generative model
-    model = genai.GenerativeModel(model_name, api_key=api_key)
+    genai.configure(api_key=gemini)
+    model = genai.GenerativeModel(model_name)
 
     # Configure the model with your desired parameters
     generation_config = genai.types.GenerationConfig(
@@ -103,34 +109,72 @@ def get_gemini_completion(prompt, model_name, max_tokens, temperature, top_p, to
     # Generate a response
     response = model.generate_content(prompt, generation_config=generation_config)
 
-    return response.text
+    return response
 
-def run_gemini(doc, relation_type, gemini_api_key, query, threshold):
-    # Extract entity pairs using the helper functions
-    entities_of_interest = ["ORGANIZATION", "PERSON", "LOCATION", "CITY", "STATE_OR_PROVINCE", "COUNTRY"]
-    entity_pairs = extract_relations(doc, spanbert, relation_type, entities_of_interest, query, threshold)
+import re
 
-    # If no entity pairs were found, return an empty list
-    if not entity_pairs:
-        print("No entity pairs found.")
-        return []
+def run_gemini(doc, relation_type, gemini, query):
+    genai.configure(api_key=gemini)
+    # print("[DEBUG] run_gemini called")
+    relation_entities = {
+        "Schools_Attended": {"Subject": "PERSON", "Object": "ORG"},
+        "Work_For": {"Subject": "PERSON", "Object": "ORG"},
+        "Live_In": {"Subject": "PERSON", "Object": ["LOC", "GPE", "FAC"]},
+        "Top_Member_Employees": {"Subject": "ORG", "Object": "PERSON"}
+    }
 
-    # Convert the entity pairs back to plain text
-    sentences = [" ".join(pair) for pair in entity_pairs]
+    entities_of_interest = relation_entities[get_relation(relation_type)]
+    # print(f"[DEBUG] Entities of_interest: {entities_of_interest}")
 
-    # Run Gemini on the sentences
+    sentences = [sent.text for sent in doc.sents if all(ent_type in [ent.label_ for ent in sent.ents] for ent_type in entities_of_interest.values())]
+    # print(f"[DEBUG] Number of sentences matching criteria: {len(sentences)}")
+
     relations = []
     for sentence in sentences:
-        try:
-            response_text = get_gemini_completion(sentence, 'gemini-pro', 100, 0.2, 1, 32, gemini_api_key)
-            relations.append(response_text)
-        except Exception as e:
-            pass
+        relationships = []
+        subject_type = entities_of_interest["Subject"]
+        object_type = " or ".join(entities_of_interest["Object"]) if isinstance(entities_of_interest["Object"], list) else entities_of_interest["Object"]
+        prompt_text = f"Analyze the sentence: '{sentence}' with respect to the query '{query}'. Identify entities within the sentence that correspond to the roles of '{subject_type}' and '{object_type}', and are directly mentioned in the sentence. Both entities '{subject_type}' and '{object_type}' should be explicitly stated in the sentence. For relationships where these entities are involved, format your findings as: 'Subject: [entity name] (Role: {subject_type}), Object: [entity name] (Role: {object_type}), Relationship Description: [explanation of how they are related]'. The explanation should make clear why this relationship is significant in the context of '{query}', specifically mentioning how both entities are relevant. Provide details only for relationships that are explicitly stated or can be clearly inferred from the sentence."
 
-    return relations
+        # print(f"[DEBUG] Gemini prompt: {prompt_text}")  # Debug statement
+        
+        response = get_gemini_completion(prompt_text, 'gemini-pro', 100, 0.2, 1, 32, gemini)
+        # print(f"[DEBUG] Gemini response: {response}")  # Debug statement
+
+        if not response._result.candidates:
+            # print("[DEBUG] No candidates found in response.")  # Debug statement
+            continue
+
+        if not response._result.candidates[0].content.parts:
+            # print("[DEBUG] No parts found in candidates.")  # Debug statement
+            continue
+
+        response_text = response._result.candidates[0].content.parts[0].text
+        # print(f"[DEBUG] Response text for parsing: {response_text}")  # Debug statement
+
+        # New parsing logic based on the structured response format
+        entity1_match = re.search(r"Subject: ([^(]+) \(Role: ([^)]+)\)", response_text)
+        entity2_match = re.search(r"Object: ([^(]+) \(Role: ([^)]+)\)", response_text)
+        relationship_match = re.search(r"Relationship Description: (.+)", response_text)
+
+        if entity1_match and entity2_match and relationship_match:
+            entity1, entity1_type = entity1_match.groups()
+            entity2, entity2_type = entity2_match.groups()
+            relationship = relationship_match.group(1)
+            relationships = [(entity1.strip(), entity2.strip(), relationship.strip())]
+
+        # print(f"[DEBUG] Extracted relationships: {relationships}")  # Debug statement
+
+        relations.extend([(sentence, relationship[0], relationship[1], relationship[2], 1.0) for relationship in relationships])
+
+    # print("Returning relations: ", relations)
+
+    return relations, len(list(doc.sents))
+
 
 # function that finds the corresponding relation to input int
-def relation(relation_type):
+def get_relation(relation_type):
+
     if relation_type == 1:
         return "Schools_Attended"
     elif relation_type == 2:
@@ -142,11 +186,32 @@ def relation(relation_type):
     else:
         raise ValueError("Invalid relation_type. Must be 1, 2, 3, or 4.")
 
+def remove_duplicates(relations):
+    # Convert the set to a list and sort it in descending order based on the extraction confidence
+    sorted_relations = sorted(list(relations), key=lambda x: x[3], reverse=True)
+
+    # Initialize an empty set for the unique relations
+    unique_relations = set()
+
+    # Initialize an empty set for the seen relations (without the extraction confidence)
+    seen_relations = set()
+
+    # Iterate over the sorted list of relations
+    for relation in sorted_relations:
+        # Create a copy of the relation without the extraction confidence
+        relation_without_confidence = relation[:3]
+
+        # If the relation without the extraction confidence is not in the set of seen relations, add it to the set of unique relations and the set of seen relations
+        if relation_without_confidence not in seen_relations:
+            unique_relations.add(relation)
+            seen_relations.add(relation_without_confidence)
+
+    return unique_relations
 
 def main(method, api_key, engine_id, gemini, relation_type, threshold, query, k_tuples):
     processed_urls = set()
     processed_queries = set()
-    extracted_relations = []
+    relations = set()
     i = 0
 
     while True:
@@ -155,11 +220,10 @@ def main(method, api_key, engine_id, gemini, relation_type, threshold, query, k_
         print(f"Engine key  = {engine_id}")
         print(f"Gemini key  = {gemini}")
         print(f"Method  = {method}")
-        print(f"Relation    = {relation(relation_type)}")
+        print(f"Relation    = {get_relation(relation_type)}")
         print(f"Threshold   = {threshold}")
         print(f"Query       = {query}")
         print(f"# of Tuples = {k_tuples}")
-
         print("Loading necessary libraries; This should take a minute or so ...")
         print(f"=========== Iteration: {i} - Query: {query} ===========")
 
@@ -171,43 +235,67 @@ def main(method, api_key, engine_id, gemini, relation_type, threshold, query, k_
 
         for idx, url in enumerate(urls, start=1):
             if url in processed_urls:  # If the URL has been processed, skip it
+                print(f"URL ({idx} / 10): {url} has already been processed. Skipping...")
                 continue
+            
             processed_urls.add(url)  # Mark the URL as processed
+
+            print(f"URL ({idx} / 10): {url}")
+            print("\tFetching text from url ...")
 
             webpage_content = retrieve_webpage(url)
             if not webpage_content:
                 continue
-
-            doc = spacy_function(webpage_content)
-            if method == "spanbert":
-                new_relations = run_spanbert(doc, spanbert, relation(relation_type), threshold)
-            elif method == "gemini":
-                new_relations = run_gemini(doc, relation(relation_type), gemini, threshold)
             else:
-                print("Unknown method.")
-                return
+                webpage_length = len(webpage_content)
+                print(f"\tWebpage length (num characters): {webpage_length}")
+                print("\tAnnotating the webpage using spacy...")
 
-            # Update the set of extracted relations with new ones
-            for rel in new_relations:
-                if rel not in extracted_relations:
-                    extracted_relations.append(rel)
-            
-            # Check if we have reached the desired number of tuples
-            if len(extracted_relations) >= k_tuples:
-                break
+                doc = spacy_function(webpage_content)
+                sentences = list(doc.sents)
+                print(f"\tExtracted {len(sentences)} sentences. Processing each sentence one by one to check for presence of right pair of named entity types; if so, will run the second pipeline ...")
 
-        if len(extracted_relations) >= k_tuples:
-            break
+                if method == "spanbert":
+                    new_relations, num_sentences = run_spanbert(doc, spanbert, get_relation(relation_type), threshold, query)
+                    relations.update(new_relations)
+                    relations = remove_duplicates(relations)
+
+                elif method == "gemini":
+                    new_relations, num_sentences = run_gemini(doc, relation_type, gemini, query)
+                    relations.update(new_relations)
+                     
+                else:
+                    print("Unknown method.")
+                    return
+                
+                # Print the new relations
+                for relation in new_relations:
+                    print("\n\t\t=== Extracted Relation ===")
+                    print(f"\t\tSentence:   {relation[0]}")
+                    print(f"\t\tSubject: {relation[1]} ; Object: {relation[2]} ; Confidence: {relation[3]}")
+                    print(f"\t\tAdding to set of extracted relations")
+                    print("\t\t==========")
+                
+                print(f"\tProcessed {len(sentences)} / {num_sentences} sentences")
+                print(f"\tExtracted annotations for {len(new_relations)} out of total {num_sentences} sentences")
+                print(f"\tRelations extracted from this website: {len(new_relations)} (Overall: {len(relations)})")
         
-        # If no new relations were added in this iteration, or if we've reached the desired number of tuples, stop
-        if not new_relations or len(extracted_relations) >= k_tuples:
+        # If we've reached the desired number of tuples, stop
+        if len(relations) >= k_tuples:
             print("No new relations found or desired number of tuples reached.")
             break
+
+        print(f"\tExtracted annotations for {len(new_relations)} out of total {num_sentences} sentences")
+        print(f"\tRelations extracted from this website: {len(new_relations)} (Overall: {len(relations)})")
         
         # Update the query with a tuple not yet used for querying
-        query = update_query_with_new_tuple(extracted_relations, processed_queries)
+        query = update_query_with_new_tuple(relations, processed_queries, method)
 
-def update_query_with_new_tuple(extracted_relations, processed_queries):
+def update_query_with_new_tuple(extracted_relations, processed_queries, method):
+    # If -spanbert is specified, sort the relations by extraction confidence
+    if method == "spanbert":
+        extracted_relations = sorted(extracted_relations, key=lambda x: x[1], reverse=True)
+
     # Iterate over the extracted relations
     for rel in extracted_relations:
         # Convert the relation to a string

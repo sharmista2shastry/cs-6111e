@@ -188,7 +188,7 @@ def get_relation(relation_type):
 
 def remove_duplicates(relations):
     # Convert the set to a list and sort it in descending order based on the extraction confidence
-    sorted_relations = sorted(list(relations), key=lambda x: x[3], reverse=True)
+    sorted_relations = sorted(list(set(relations)), key=lambda x: x[0], reverse=True)
 
     # Initialize an empty set for the unique relations
     unique_relations = set()

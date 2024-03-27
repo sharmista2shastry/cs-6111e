@@ -75,21 +75,22 @@ def is_valid_pair(pair, relation_type):
 def run_spanbert(doc, spanbert, relation_type, threshold, query):
     # Define the entities of interest for each relation type
     relation_entities = {
-        "Schools_Attended": ["PERSON", "ORG"],
-        "Work_For": ["PERSON", "ORG"],
-        "Live_In": ["PERSON", "LOC", "GPE", "FAC"],
-        "Top_Member_Employees": ["ORG", "PERSON"]
+        "Schools_Attended": ["PERSON", "ORGANIZATION"],
+        "Work_For": ["PERSON", "ORGANIZATION"],
+        "Live_In": ["PERSON", "LOCATION", "CITY", "COUNTRY", "STATE_OR_PROVINCE"],
+        "Top_Member_Employees": ["ORGANIZATION", "PERSON"]
     }
 
     # Extract relations using the helper functions and SpanBERT model
     entities_of_interest = relation_entities[relation_type]
     relations = extract_relations(doc, spanbert, entities_of_interest)
 
-    # Filter the relations based on the relation_type and the extraction confidence
-    filtered_relations = [(relation[0], (relation[1], relation[2]), relation[3]) for relation in relations if relation[2] == relation_type and relation[3] >= threshold]
-
     # Post-process the relations based on the query
-    post_processed_relations = [(relation[0], relation[1], relation[2]) for relation in filtered_relations if query in relation[0].text or query in relation[1][0].text or query in relation[1][1].text]
+    post_processed_relations = []
+    for relation in relations:
+        sentence, entity1, entity2 = relation
+        if entity1[0] in query or entity2[0] in query:
+            post_processed_relations.append(relation)
 
     return post_processed_relations, len(list(doc.sents))
 
@@ -117,10 +118,10 @@ def run_gemini(doc, relation_type, gemini, query):
     genai.configure(api_key=gemini)
     # print("[DEBUG] run_gemini called")
     relation_entities = {
-        "Schools_Attended": {"Subject": "PERSON", "Object": "ORG"},
-        "Work_For": {"Subject": "PERSON", "Object": "ORG"},
-        "Live_In": {"Subject": "PERSON", "Object": ["LOC", "GPE", "FAC"]},
-        "Top_Member_Employees": {"Subject": "ORG", "Object": "PERSON"}
+        "Schools_Attended": {"Subject": "PERSON", "Object": "ORGANIZATION"},
+        "Work_For": {"Subject": "PERSON", "Object": "ORGANIZATION"},
+        "Live_In": {"Subject": "PERSON", "Object": ["LOCATION", "CITY", "COUNTRY", "STATE_OR_PROVINCE"]},
+        "Top_Member_Employees": {"Subject": "ORGANIZATION", "Object": "PERSON"}
     }
 
     entities_of_interest = relation_entities[get_relation(relation_type)]
@@ -133,9 +134,8 @@ def run_gemini(doc, relation_type, gemini, query):
     for sentence in sentences:
         relationships = []
         subject_type = entities_of_interest["Subject"]
-        object_type = " or ".join(entities_of_interest["Object"]) if isinstance(entities_of_interest["Object"], list) else entities_of_interest["Object"]
-        prompt_text = f"Analyze the sentence: '{sentence}' with respect to the query '{query}'. Identify entities within the sentence that correspond to the roles of '{subject_type}' and '{object_type}', and are directly mentioned in the sentence. Both entities '{subject_type}' and '{object_type}' should be explicitly stated in the sentence. For relationships where these entities are involved, format your findings as: 'Subject: [entity name] (Role: {subject_type}), Object: [entity name] (Role: {object_type}), Relationship Description: [explanation of how they are related]'. The explanation should make clear why this relationship is significant in the context of '{query}', specifically mentioning how both entities are relevant. Provide details only for relationships that are explicitly stated or can be clearly inferred from the sentence."
-
+        object_type = entities_of_interest["Object"]
+        prompt_text = f"Analyze the sentence: '{sentence}' in the context of the query '{query}'. Identify the entities in the sentence that play the roles of '{subject_type}' and '{object_type}', and are directly mentioned in the sentence. The identified entities should match the subject and object in the context of the query. Format your findings as: 'Subject: [entity name] (Role: {subject_type}), Object: [entity name] (Role: {object_type}), Relationship Description: [explanation of how they are related]'. The explanation should clarify the relationship between the subject and object in the context of '{query}', without making any inferences or assumptions. Only provide details for relationships that are explicitly stated in the sentence."
         # print(f"[DEBUG] Gemini prompt: {prompt_text}")  # Debug statement
         
         response = get_gemini_completion(prompt_text, 'gemini-pro', 100, 0.2, 1, 32, gemini)
@@ -263,18 +263,17 @@ def main(method, api_key, engine_id, gemini, relation_type, threshold, query, k_
                 elif method == "gemini":
                     new_relations, num_sentences = run_gemini(doc, relation_type, gemini, query)
                     relations.update(new_relations)
+
+                    for relation in new_relations:
+                        print("\n\t\t=== Extracted Relation ===")
+                        print(f"\t\tSentence:   {relation[0]}")
+                        print(f"\t\tSubject: {relation[1]} ; Object: {relation[2]} ; Confidence: {relation[3]}")
+                        print(f"\t\tAdding to set of extracted relations")
+                        print("\t\t==========")
                      
                 else:
                     print("Unknown method.")
                     return
-                
-                # Print the new relations
-                for relation in new_relations:
-                    print("\n\t\t=== Extracted Relation ===")
-                    print(f"\t\tSentence:   {relation[0]}")
-                    print(f"\t\tSubject: {relation[1]} ; Object: {relation[2]} ; Confidence: {relation[3]}")
-                    print(f"\t\tAdding to set of extracted relations")
-                    print("\t\t==========")
                 
                 print(f"\tProcessed {len(sentences)} / {num_sentences} sentences")
                 print(f"\tExtracted annotations for {len(new_relations)} out of total {num_sentences} sentences")
@@ -282,7 +281,7 @@ def main(method, api_key, engine_id, gemini, relation_type, threshold, query, k_
         
         # If we've reached the desired number of tuples, stop
         if len(relations) >= k_tuples:
-            print("No new relations found or desired number of tuples reached.")
+            print("Desired number of tuples reached.")
             break
 
         print(f"\tExtracted annotations for {len(new_relations)} out of total {num_sentences} sentences")
@@ -290,6 +289,12 @@ def main(method, api_key, engine_id, gemini, relation_type, threshold, query, k_
         
         # Update the query with a tuple not yet used for querying
         query = update_query_with_new_tuple(relations, processed_queries, method)
+
+    # After the while loop
+    print(f"================== ALL RELATIONS for {get_relation(relation_type)} ({len(urls)}) =================")
+    for relation in relations:
+        print(f"Confidence: {relation[3]} \t\t| Subject: {relation[0]} \t\t| Object: {relation[2]}")
+    print(f"Total # of iterations = {i}")
 
 def update_query_with_new_tuple(extracted_relations, processed_queries, method):
     # If -spanbert is specified, sort the relations by extraction confidence

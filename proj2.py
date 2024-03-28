@@ -81,16 +81,31 @@ def run_spanbert(doc, spanbert, relation_type, threshold, query):
         "Top_Member_Employees": ["ORGANIZATION", "PERSON"]
     }
 
+    # Map the relation_type to the internal relations
+    internal_relations_map = {
+        "Schools_Attended": "schools_attended",
+        "Work_For": "employee_of",
+        "Live_In": ["countries_of_residence", "cities_of_residence", "stateorprovinces_of_residence", "origin"],
+        "Top_Member_Employees": "top_members/employees"
+    }
+
     # Extract using the helper functions and SpanBERT model
     entities_of_interest = [relation_entities_spanbert[relation_type]]
     relations = extract_relations(doc, spanbert, entities_of_interest, threshold)
 
+    # print(f"Extracted Relations: {relations}")
+
     # Post-process the relations based on the query
     post_processed_relations = []
     for (subj, relation, obj), confidence in relations.items():
-        # Check if the relation matches the relation_type and the entity types match the expected types
-        if relation_type.lower() in relation.lower():
+        # Remove the prefix and convert the relation to lowercase
+        relation_no_prefix = relation[4:].lower()
+
+        # Check if the relation matches one of the internal relations for the relation_type
+        if relation_no_prefix in internal_relations_map[relation_type]:
             post_processed_relations.append((subj, obj, relation, confidence))
+    
+    # print(f"Post Processed Relations: {post_processed_relations}")
 
     return post_processed_relations, len(list(doc.sents))
 
@@ -131,9 +146,11 @@ def run_gemini(doc, relation_type, gemini, query):
     relations = []
     for sentence in sentences:
         subject_type = entities_of_interest["Subject"]
-        object_types = entities_of_interest["Object"] if isinstance(entities_of_interest["Object"], list) else [entities_of_interest["Object"]]
-        object_type = " or ".join(object_types)
-        prompt_text = f"Analyze the sentence: '{sentence}' with respect to the query '{query}'. Identify entities within the sentence that correspond to the roles of '{subject_type}' and '{object_type}', and are directly mentioned in the sentence. Both entities '{subject_type}' and '{object_type}' should be explicitly stated in the sentence. For relationships where these entities are involved, format your findings as: 'Subject: [entity name] (Role: {subject_type}), Object: [entity name] (Role: {object_type}), Relationship Type: {relation_type}'."
+        object_types = entities_of_interest["Object"]
+        # Explicitly state the expected types of the 'Subject' and 'Object' in the prompt
+        # Revised prompt
+        # Revised prompt
+        prompt_text = f"Examine the sentence: '{sentence}' in the context of the query '{query}'. Your task is to identify two entities in the sentence: one acting as the 'Subject' and the other as the 'Object'. The 'Subject' entity should match one of the types specified in '{subject_type}', and the 'Object' entity should match one of the types in '{object_types}'. Furthermore, the relationship between these two entities should align with the relation type: {get_relation(relation_type)}. Once identified, present your findings in the following format: 'Subject: [entity name] (Role: {subject_type}), Object: [entity name] (Role: {object_types}), Relationship Type: {get_relation(relation_type)}'. Do not return relations where both entities meeting all these conditions are not found. If either the 'Subject' or the 'Object' is not found in the sentence, do not return any relation."
 
         response = get_gemini_completion(prompt_text, 'gemini-pro', 100, 0.2, 1, 32, gemini)
 
@@ -157,6 +174,13 @@ def run_gemini(doc, relation_type, gemini, query):
             # Check if the extracted entities match the entities of interest exactly
             if entity1_type == subject_type and entity2_type in object_types:
                 relations.append((entity1.strip(), entity2.strip(), relationship.strip(), 1.0))
+
+                # Print the sentence and the extracted relation
+                print("\n\t\t=== Extracted Relation ===")
+                print(f"\t\tSentence:   {sentence}")
+                print(f"\t\tSubject: {entity1.strip()} ; Object: {entity2.strip()} ; Confidence: 1.0")
+                print(f"\t\tAdding to set of extracted relations")
+                print("\t\t==========")
 
     return relations, len(list(doc.sents))
 
@@ -241,13 +265,6 @@ def main(method, api_key, engine_id, gemini, relation_type, threshold, query, k_
                 elif method == "gemini":
                     new_relations, num_sentences = run_gemini(doc, relation_type, gemini, query)
                     relations.update(new_relations)
-
-                    for relation in new_relations:
-                        print("\n\t\t=== Extracted Relation ===")
-                        print(f"\t\tSentence:   {relation[0]}")
-                        print(f"\t\tSubject: {relation[0]} ; Object: {relation[1]} ; Confidence: {relation[3]}")
-                        print(f"\t\tAdding to set of extracted relations")
-                        print("\t\t==========")
                      
                 else:
                     print("Unknown method.")

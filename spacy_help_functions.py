@@ -29,7 +29,8 @@ def extract_relations(doc, spanbert, relation_type, entities_of_interest=None, c
     internal_relations_map = {
         "Schools_Attended": ["per:schools_attended"],
         "Work_For": ["per:employee_of"],
-        "Live_In": ["per:countries_of_residence", "per:cities_of_residence", "per:stateorprovinces_of_residence", "per:origin"],
+        #"Live_In": ["per:countries_of_residence", "per:cities_of_residence", "per:stateorprovinces_of_residence", "per:origin"],
+        "Live_In": ["per:cities_of_residence"],
         "Top_Member_Employees": ["org:top_members/employees"]
     }
 
@@ -44,10 +45,12 @@ def extract_relations(doc, spanbert, relation_type, entities_of_interest=None, c
         for ep in entity_pairs:
             examples.append({"tokens": ep[0], "subj": ep[1], "obj": ep[2]})
             examples.append({"tokens": ep[0], "subj": ep[2], "obj": ep[1]})
-
-        if examples:  # Check if examples list is not empty
-            preds = spanbert.predict(examples)
-            for ex, pred in list(zip(examples, preds)):
+        if examples:
+            filtered_examples = [ex for ex in examples if ex['subj'][1] != 'LOCATION']
+            if not filtered_examples:
+                continue  # Check if examples list is not empty
+            preds = spanbert.predict(filtered_examples)
+            for ex, pred in list(zip(filtered_examples, preds)):
                 for relation in relations:
                     if relation == pred[0]:
                         print("\n\t\t=== Extracted Relation ===")

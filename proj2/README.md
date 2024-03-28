@@ -73,7 +73,7 @@ To run the program, follow these steps:
     tar -xvzf proj2.tar.gz
    ```
 
-3. Move proj2.py, spacy_help_functions.py, and requirements_proj2.txt to the SpanBERT folder. If there is already a spacy_help_functions.py file in the SpanBERT folder, replace it with the one provided in the proj2 zip.
+3. Move proj2.py, spacy_help_functions.py, and requirements_proj2.txt to the SpanBERT folder from the proj2 folder. If there is already a spacy_help_functions.py file in the SpanBERT folder, replace it with the one provided in the proj2 zip.
 
 4. Navigate to the "SpanBERT" directory where you will now house the file named "requirements_proj2.txt" housing all necessary packages. Install these packages by executing the following command:
    ```
@@ -143,7 +143,7 @@ Here is a more detailed overview of the function:
 
 - Definition of Entity Types: The function defines a dictionary, relation_entities_spanbert, that maps each relation type to a list of entity types relevant to that relation type.
 
-- Mapping of Relation Types: Another dictionary, internal_relations_map, maps each relation type to its corresponding SpanBERT model relation.
+- Mapping of Relation Types: Another dictionary, internal_relations_map, maps each relation type to its corresponding SpanBERT model relation. For SpanBERT, we only use CITY for location.
 
 - Extraction of Relations: The function calls the extract_relations function to extract relations from the document using SpanBERT. It provides the document, SpanBERT model, entity types of interest, and a threshold for relation extraction.
 

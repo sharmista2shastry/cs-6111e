@@ -18,21 +18,26 @@ To run the program, follow these steps:
 1. If necessary, you should install Python 3.9 and create a Python 3.9 virtual environment to develop and test your code, as follows:
     First, make sure that you're using a fresh directory for the project, with no other virtual environments currently activated.
     Install Python 3.9, by running:
+   '''
     sudo apt update
     sudo apt install python3.9
     sudo apt install python3.9-venv
-    Create a new virtual environment named dbproj: python3.9 -m venv dbproj
+   '''
+    Create a new virtual environment named dbproj:
+   ''' python3.9 -m venv dbproj '''
     To ensure the correct installation of Python 3.9, run:
-    source dbproj/bin/activate
-    python --version. This command should return ‘Python 3.9.5’.
+    ''' source dbproj/bin/activate
+    python --version''' . This command should return ‘Python 3.9.5’.
     Also, when using the commands apt or apt-get below, you may get an error that says "ModuleNotFoundError: No module named 'apt_pkg'." In this case, then please perform the following steps:
+   '''
     cd /usr/lib/python3/dist-packages
     sudo ln -s apt_pkg.cpython-36m-x86_64-linux-gnu.so apt_pkg.so
     cd ~
     sudo pip3 install --upgrade google-api-python-client
+   '''
     Finally, note that some of the commands below may generate warnings (not errors) when you run them. As long as these are labeled “Warnings” (and not “Errors”), you can feel free to ignore them.
 
-2. Your program will rely on:
+3. Your program will rely on:
     The Google Custom Search API. In your new dbproj virtual environment, run:
     pip3 install --upgrade google-api-python-client
     The Beautiful Soup toolkit:
@@ -50,7 +55,7 @@ To run the program, follow these steps:
     The Google Gemini API to extract the above relations from text documents by exploiting large language models, as a state-of-the-art alternative to SpanBERT:
     pip install -q -U google-generativeai
 
-3. Unzip the proj2.tar.gz file by running:
+4. Unzip the proj2.tar.gz file by running:
     tar -xvzf proj2.tar.gz
 
 3. Move proj2.py, spacy_help_functions.py, and requirements_proj2.txt to the SpanBERT folder. If there is already a spacy_help_functions.py file in the SpanBERT folder, replace it with the one provided in the proj2 zip.

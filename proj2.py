@@ -245,7 +245,7 @@ def main(method, api_key, engine_id, gemini, relation_type, threshold, query, k_
                     for relation in new_relations:
                         print("\n\t\t=== Extracted Relation ===")
                         print(f"\t\tSentence:   {relation[0]}")
-                        print(f"\t\tSubject: {relation[1]} ; Object: {relation[2]} ; Confidence: {relation[3]}")
+                        print(f"\t\tSubject: {relation[0]} ; Object: {relation[1]} ; Confidence: {relation[3]}")
                         print(f"\t\tAdding to set of extracted relations")
                         print("\t\t==========")
                      

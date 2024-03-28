@@ -139,20 +139,33 @@ def run_gemini(doc, relation_type, gemini, query):
         "Top_Member_Employees": {"Subject": "ORG", "Object": "PERSON"}
     }
 
-    entities_of_interest = relation_entities[get_relation(relation_type)]
+    relation_descriptions = {
+    "Schools_Attended": {"Subject": "PERSON", "Object": "ORGANIZATION"},
+    "Work_For": {"Subject": "PERSON", "Object": "ORGANIZATION"},
+    "Live_In": {"Subject": "PERSON", "Object": ["LOCATION", "CITY", "COUNTRY", "STATE_OR_PROVINCE"]},
+    "Top_Member_Employees": {"Subject": "ORGANIZATION", "Object": "PERSON"}
+    }
 
-    sentences = [sent.text for sent in doc.sents if any(ent_type in [ent.label_ for ent in sent.ents] for ent_type in entities_of_interest.values())]
+    relation_of_interest = get_relation(relation_type)
+    entities_of_interest = relation_entities[relation_of_interest]
+
+    subject_type = entities_of_interest["Subject"]
+    object_types = entities_of_interest["Object"]
+    object_types = object_types if isinstance(object_types, list) else [object_types]
+
+    sentences = [sent.text for sent in doc.sents if 
+                any(ent.label_ == subject_type for ent in sent.ents) and 
+                any(ent.label_ == object_type for ent in sent.ents for object_type in object_types)]
 
     relations = []
     for sentence in sentences:
-        subject_type = entities_of_interest["Subject"]
-        object_types = entities_of_interest["Object"]
-        # Explicitly state the expected types of the 'Subject' and 'Object' in the prompt
-        # Revised prompt
-        # Revised prompt
-        prompt_text = f"Examine the sentence: '{sentence}' in the context of the query '{query}'. Your task is to identify two entities in the sentence: one acting as the 'Subject' and the other as the 'Object'. The 'Subject' entity should match one of the types specified in '{subject_type}', and the 'Object' entity should match one of the types in '{object_types}'. Furthermore, the relationship between these two entities should align with the relation type: {get_relation(relation_type)}. Once identified, present your findings in the following format: 'Subject: [entity name] (Role: {subject_type}), Object: [entity name] (Role: {object_types}), Relationship Type: {get_relation(relation_type)}'. Do not return relations where both entities meeting all these conditions are not found. If either the 'Subject' or the 'Object' is not found in the sentence, do not return any relation."
+        # print(f"Subject Type: {subject_type}")
+        # print(f"Object Type: {object_type}")
 
+        prompt_text = f"In the sentence: '{sentence}', identify a 'Subject' of type '{subject_type}' and an 'Object' of type '{object_types}' that have a '{relation_of_interest}' relationship similar to the one in the query '{query}'. If such a relationship exists, present your findings in the format 'Subject: <subject>, Object: <object>, Relation: <relation>'. If no such relationship exists, state 'No matching relationship found.'"
         response = get_gemini_completion(prompt_text, 'gemini-pro', 100, 0.2, 1, 32, gemini)
+        # print(f"Sentence: {sentence}")
+        # print(f"Extracted Response: {response}")
 
         if not response._result.candidates:
             continue
@@ -162,25 +175,25 @@ def run_gemini(doc, relation_type, gemini, query):
 
         response_text = response._result.candidates[0].content.parts[0].text
 
-        entity1_match = re.search(r"Subject: ([^(]+) \(Role: ([^)]+)\)", response_text)
-        entity2_match = re.search(r"Object: ([^(]+) \(Role: ([^)]+)\)", response_text)
-        relationship_match = re.search(r"Relationship Type: (.+)", response_text)
+        entity1_match = re.search(r"Subject: ([^,]+),", response_text)
+        entity2_match = re.search(r"Object: ([^,]+),", response_text)
+        relationship_match = re.search(r"Relation: (.+)", response_text)
 
         if entity1_match and entity2_match and relationship_match:
-            entity1, entity1_type = entity1_match.groups()
-            entity2, entity2_type = entity2_match.groups()
+            entity1 = entity1_match.group(1)
+            entity2 = entity2_match.group(1)
             relationship = relationship_match.group(1)
 
-            # Check if the extracted entities match the entities of interest exactly
-            if entity1_type == subject_type and entity2_type in object_types:
-                relations.append((entity1.strip(), entity2.strip(), relationship.strip(), 1.0))
+            relations.append((entity1.strip(), entity2.strip(), relationship.strip(), 1.0))
 
-                # Print the sentence and the extracted relation
-                print("\n\t\t=== Extracted Relation ===")
-                print(f"\t\tSentence:   {sentence}")
-                print(f"\t\tSubject: {entity1.strip()} ; Object: {entity2.strip()} ; Confidence: 1.0")
-                print(f"\t\tAdding to set of extracted relations")
-                print("\t\t==========")
+            # Print the sentence and the extracted relation
+            print("\n\t\t=== Extracted Relation ===")
+            print(f"\t\tSentence:   {sentence}")
+            print(f"\t\tSubject: {entity1.strip()} ; Object: {entity2.strip()} ; Confidence: 1.0")
+            print(f"\t\tAdding to set of extracted relations")
+            print("\t\t==========")
+                        
+            # print(f"Processed Relations: {relations}")
 
     return relations, len(list(doc.sents))
 
@@ -303,8 +316,8 @@ def update_query_with_new_tuple(extracted_relations, processed_queries, method):
 
     # Iterate over the extracted relations
     for rel in extracted_relations:
-        # Convert the relation to a string
-        rel_str = ' '.join([str(elem) for elem in rel])
+        # Convert the relation to a string, excluding the confidence score
+        rel_str = ' '.join([str(elem) for elem in rel[:-1]])
         # If this relation hasn't been used as a query yet, return it
         if rel_str not in processed_queries:
             return rel_str

@@ -24,11 +24,16 @@ To run the program, follow these steps:
     sudo apt install python3.9-venv
    ```
     Create a new virtual environment named dbproj:
-   ``` python3.9 -m venv dbproj ```
+   ```
+   python3.9 -m venv dbproj
+   ```
     To ensure the correct installation of Python 3.9, run:
-    ```source dbproj/bin/activate
-    python --version``` . This command should return ‘Python 3.9.5’.
-    Also, when using the commands apt or apt-get below, you may get an error that says "ModuleNotFoundError: No module named 'apt_pkg'." In this case, then please perform the following steps:
+   ```
+   source dbproj/bin/activate
+   python --version
+   ```
+   This command should return ‘Python 3.9.5’.
+   Also, when using the commands apt or apt-get below, you may get an error that says "ModuleNotFoundError: No module named 'apt_pkg'." In this case, then please perform the following steps:
    ```
     cd /usr/lib/python3/dist-packages
     sudo ln -s apt_pkg.cpython-36m-x86_64-linux-gnu.so apt_pkg.so
@@ -39,32 +44,46 @@ To run the program, follow these steps:
 
 3. Your program will rely on:
     The Google Custom Search API. In your new dbproj virtual environment, run:
+   ```
     pip3 install --upgrade google-api-python-client
     The Beautiful Soup toolkit:
     pip3 install beautifulsoup4
+   ```
     spaCy:
+   ```
     sudo apt-get update
     pip3 install -U pip setuptools wheel
     pip3 install -U spacy
     python3 -m spacy download en_core_web_lg
+   ```
     We have implemented the scripts for downloading and running the pre-trained SpanBERT classifier for the purpose of this project:
+   ```
     git clone https://github.com/larakaracasu/SpanBERT
     cd SpanBERT
     pip3 install -r requirements.txt
     bash download_finetuned.sh
+   ```
     The Google Gemini API to extract the above relations from text documents by exploiting large language models, as a state-of-the-art alternative to SpanBERT:
+   ```
     pip install -q -U google-generativeai
+   ```
 
-4. Unzip the proj2.tar.gz file by running:
+5. Unzip the proj2.tar.gz file by running:
+   ```
     tar -xvzf proj2.tar.gz
+   ```
 
 3. Move proj2.py, spacy_help_functions.py, and requirements_proj2.txt to the SpanBERT folder. If there is already a spacy_help_functions.py file in the SpanBERT folder, replace it with the one provided in the proj2 zip.
 
 4. Navigate to the "SpanBERT" directory where you will now house the file named "requirements_proj2.txt" housing all necessary packages. Install these packages by executing the following command:
+   ```
     pip install -r requirements_proj2.txt
+   ```
 
-5. Execute the command below within the SpanBERT folder to retrieve the Google search results for your specified query:
+6. Execute the command below within the SpanBERT folder to retrieve the Google search results for your specified query:
+   ```
     python3 proj2.py [-spanbert|-gemini] <google api key> <google engine id> <google gemini api key> <r> <t> <q> <k>
+   ```
 
 ## Internal Design
 
@@ -110,13 +129,13 @@ The script uses the following external libraries:
 
 - re: This library provides support for regular expressions in Python.
 
-## Parsing web content
+## Parsing Web Content
 
 - retrieve_webpage: This function uses the requests and BeautifulSoup libraries to clean the webpage text and shorten the length if needed. 
 
 - spacy_function: this function uses spaCy to parse the text returned from retrieve_webpage.
 
-## SpanBERT method
+## SpanBERT Method
 
 The run_spanbert function is designed to extract relations from a parsed webpage using the pretrained SpanBERT model.
 
@@ -154,7 +173,7 @@ Here is a more detailed overview of the function:
 
 - Output: The function then returns the extracted relations along with the total number of sentences processed in the document.
 
-## KEYS
+## Keys
 
 JSON API key: AIzaSyBd3QkH6ICMU5WxD6-MrmyqC8wNTJbj_SQ
 

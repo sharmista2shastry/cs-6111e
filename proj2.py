@@ -1,12 +1,10 @@
 import sys
 import requests
-from bs4 import BeautifulSoup, Comment
+from bs4 import BeautifulSoup
 import spacy
 from spacy.tokens import Span
-from collections import defaultdict
 from spanbert import SpanBERT
 from spacy_help_functions import extract_relations
-import os
 import google.generativeai as genai
 import re
 
@@ -53,62 +51,40 @@ def retrieve_webpage(url):
         print(f"Error retrieving webpage: {e}")
     return None
 
-
+# spacy implementation
 def spacy_function(text):
     nlp = spacy.load("en_core_web_sm")
     doc = nlp(text)
 
     return doc
 
-def is_valid_pair(pair, relation_type):
-    if relation_type == "Schools_Attended":
-        return pair[0].label_ == 'PERSON' and pair[1].label_ == 'ORG'
-    elif relation_type == "Work_For":
-        return pair[0].label_ == 'PERSON' and pair[1].label_ == 'ORG'
-    elif relation_type == "Live_In":
-        return pair[0].label_ == 'PERSON' and pair[1].label_ in ['LOC', 'GPE', 'FAC']
-    elif relation_type == "Top_Member_Employees":
-        return pair[0].label_ == 'ORG' and pair[1].label_ == 'PERSON'
-    else:
-        return False
 
+# Function for running SpanBERT model
 def run_spanbert(doc, spanbert, relation_type, threshold, query):
     # Define the entities of interest for each relation type
     relation_entities_spanbert = {
         "Schools_Attended": ["PERSON", "ORGANIZATION"],
         "Work_For": ["PERSON","ORGANIZATION"],
-        "Live_In": ["PERSON", "LOCATION", "CITY", "COUNTRY", "STATE_OR_PROVINCE"],
+        #"Live_In": ["PERSON", "LOCATION", "CITY", "COUNTRY", "STATE_OR_PROVINCE"],
+        "Live_In": ["PERSON", "CITY"],
         "Top_Member_Employees": ["ORGANIZATION", "PERSON"]
-    }
-
-    # Map the relation_type to the internal relations
-    internal_relations_map = {
-        "Schools_Attended": "schools_attended",
-        "Work_For": "employee_of",
-        "Live_In": ["countries_of_residence", "cities_of_residence", "stateorprovinces_of_residence", "origin"],
-        "Top_Member_Employees": "top_members/employees"
     }
 
     # Extract using the helper functions and SpanBERT model
     entities_of_interest = [relation_entities_spanbert[relation_type]]
-    relations = extract_relations(doc, spanbert, entities_of_interest, threshold)
+    relations = extract_relations(doc, spanbert, relation_type, entities_of_interest, threshold)
 
     # print(f"Extracted Relations: {relations}")
 
     # Post-process the relations based on the query
     post_processed_relations = []
     for (subj, relation, obj), confidence in relations.items():
-        # Remove the prefix and convert the relation to lowercase
-        relation_no_prefix = relation[4:].lower()
-
-        # Check if the relation matches one of the internal relations for the relation_type
-        if relation_no_prefix in internal_relations_map[relation_type]:
-            post_processed_relations.append((subj, obj, relation, confidence))
-    
+        post_processed_relations.append((subj, obj, relation, confidence))
     # print(f"Post Processed Relations: {post_processed_relations}")
 
     return post_processed_relations, len(list(doc.sents))
 
+# gemini helper
 def get_gemini_completion(prompt, model_name, max_tokens, temperature, top_p, top_k, gemini):
     # Initialize a generative model
     genai.configure(api_key=gemini)
@@ -127,8 +103,7 @@ def get_gemini_completion(prompt, model_name, max_tokens, temperature, top_p, to
 
     return response
 
-import re
-
+# Function for running gemini
 def run_gemini(doc, relation_type, gemini, query):
     genai.configure(api_key=gemini)
 
@@ -196,6 +171,7 @@ def run_gemini(doc, relation_type, gemini, query):
             # print(f"Processed Relations: {relations}")
 
     return relations, len(list(doc.sents))
+
 
 # function that finds the corresponding relation to input int
 def get_relation(relation_type):
@@ -299,13 +275,16 @@ def main(method, api_key, engine_id, gemini, relation_type, threshold, query, k_
         query = update_query_with_new_tuple(relations, processed_queries, method)
 
     # After the while loop
-    print(f"================== ALL RELATIONS for {get_relation(relation_type)} ({len(urls)}) =================")
+    print(f"================== ALL RELATIONS for {get_relation(relation_type)} ({k_tuples}) =================")
     relations = list(relations)
     relations.sort(key=lambda x: x[3], reverse=True)  # Sort the relations by confidence score
 
     # Only iterate over the first k_tuples elements
     for relation in relations[:k_tuples]:
-        print(f"Confidence: {relation[3]} \t\t| Subject: {relation[0]} \t\t| Object: {relation[1]}")
+        if method == "spanbert":
+            print(f"Confidence: {relation[3]} \t\t| Subject: {relation[0]} \t\t| Object: {relation[1]}")
+        if method == "gemini":
+            print(f"Subject: {relation[0]} \t\t| Object: {relation[1]}")
 
     print(f"Total # of iterations = {i}")
 
@@ -316,8 +295,9 @@ def update_query_with_new_tuple(extracted_relations, processed_queries, method):
 
     # Iterate over the extracted relations
     for rel in extracted_relations:
-        # Convert the relation to a string, excluding the confidence score
-        rel_str = ' '.join([str(elem) for elem in rel[:-1]])
+        # Convert the relation to a string
+        rel_str = ' '.join([str(elem) for elem in rel[:-2]])
+        print(rel_str)
         # If this relation hasn't been used as a query yet, return it
         if rel_str not in processed_queries:
             return rel_str

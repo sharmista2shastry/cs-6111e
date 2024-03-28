@@ -24,12 +24,21 @@ def get_entities(sentence, entities_of_interest):
     return [(e.text, spacy2bert[e.label_]) for e in sentence.ents if e.label_ in spacy2bert]
 
 
-def extract_relations(doc, spanbert, entities_of_interest=None, conf=0.7):
+def extract_relations(doc, spanbert, relation_type, entities_of_interest=None, conf=0.7):
+    # Map the relation_type to the internal relations
+    internal_relations_map = {
+        "Schools_Attended": ["per:schools_attended"],
+        "Work_For": ["per:employee_of"],
+        "Live_In": ["per:countries_of_residence", "per:cities_of_residence", "per:stateorprovinces_of_residence", "per:origin"],
+        "Top_Member_Employees": ["org:top_members/employees"]
+    }
+
+    relations = internal_relations_map[relation_type]
     num_sentences = len([s for s in doc.sents])
     print("Total # sentences = {}".format(num_sentences))
     res = defaultdict(int)
     for sentence in doc.sents:
-        print("\tprocessing sentence: {}".format(sentence))
+        #print("\tprocessing sentence: {}".format(sentence))
         entity_pairs = create_entity_pairs(sentence, entities_of_interest)
         examples = []
         for ep in entity_pairs:
@@ -39,26 +48,25 @@ def extract_relations(doc, spanbert, entities_of_interest=None, conf=0.7):
         if examples:  # Check if examples list is not empty
             preds = spanbert.predict(examples)
             for ex, pred in list(zip(examples, preds)):
-                relation = pred[0]
-                if relation == 'no_relation':
-                    continue
-                print("\n\t\t=== Extracted Relation ===")
-                print("\t\tTokens: {}".format(ex['tokens']))
-                subj = ex["subj"][0]
-                obj = ex["obj"][0]
-                confidence = pred[1]
-                print("\t\tRelation: {} (Confidence: {:.3f})\nSubject: {}\tObject: {}".format(relation, confidence, subj, obj))
-                print(f"\t\tSubject Type: {ex['subj'][1]}")  # Print the entity type of the subject
-                print(f"\t\tObject Type: {ex['obj'][1]}")  # Print the entity type of the object
-                if confidence > conf:
-                    if res[(subj, relation, obj)] < confidence:
-                        res[(subj, relation, obj)] = confidence
-                        print("\t\tAdding to set of extracted relations")
-                    else:
-                        print("\t\tDuplicate with lower confidence than existing record. Ignoring this.")
-                else:
-                    print("\t\tConfidence is lower than threshold confidence. Ignoring this.")
-                print("\t\t==========")
+                for relation in relations:
+                    if relation == pred[0]:
+                        print("\n\t\t=== Extracted Relation ===")
+                        print("\t\tTokens: {}".format(ex['tokens']))
+                        subj = ex["subj"][0]
+                        obj = ex["obj"][0]
+                        confidence = pred[1]
+                        print("\t\tRelation: {} (Confidence: {:.3f})\nSubject: {}\tObject: {}".format(relation, confidence, subj, obj))
+                        print(f"\t\tSubject Type: {ex['subj'][1]}")  # Print the entity type of the subject
+                        print(f"\t\tObject Type: {ex['obj'][1]}")  # Print the entity type of the object
+                        if confidence > conf:
+                            if res[(subj, relation, obj)] < confidence:
+                                res[(subj, relation, obj)] = confidence
+                                print("\t\tAdding to set of extracted relations")
+                            else:
+                                print("\t\tDuplicate with lower confidence than existing record. Ignoring this.")
+                        else:
+                            print("\t\tConfidence is lower than threshold confidence. Ignoring this.")
+                        print("\t\t==========")
     return res
 
 

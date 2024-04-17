@@ -19,7 +19,13 @@ def discretize_concentration(concentration):
 
 # Function to generate the candidate itemsets of size k
 def apriori_gen(Lk_minus_1, k):
-    return set([i.union(j) for i in Lk_minus_1 for j in Lk_minus_1 if len(i.union(j)) == k])
+    Ck = set([i.union(j) for i in Lk_minus_1 for j in Lk_minus_1 if len(i.union(j)) == k])
+    Ck_pruned = set()
+    for itemset in Ck:
+        subsets = set(frozenset([item]) for item in itemset)
+        if subsets.issubset(Lk_minus_1):
+            Ck_pruned.add(itemset)
+    return Ck_pruned
 
 # Function to calculate the support of itemsets in the DataFrame
 def calculate_support(df, itemsets):
@@ -78,6 +84,14 @@ def main():
 
     # Load the dataset
     df = pd.read_csv(filename)
+
+    # List of values to drop
+    values_to_drop = ['UNKNOWN OR NOT STATED']
+
+    # Drop rows that contain any of the values in `values_to_drop`
+    df = df[~df.isin(values_to_drop).any(axis=1)]
+
+    # print("Number of rows after dropping: ", df.shape[0])
 
     # Discretize the 'CONCENTRATION' column and one-hot encode the dataframe
     df['CONCENTRATION_CATEGORY'] = df['CONCENTRATION'].apply(discretize_concentration)

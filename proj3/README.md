@@ -7,7 +7,7 @@
 - proj3.tar.gz
     - main.py
     - requirements.txt
-- INTEGRATRED_DATASET.csv
+- INTEGRATED_DATASET.csv
 - example-run.txt
 - README.md
 

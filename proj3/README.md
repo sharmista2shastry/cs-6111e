@@ -1,4 +1,4 @@
-# ## COMS 6111E
+### COMS 6111E
 ## Sharmista Shastry (ss6950) and Cindy Ruan (cxr2000)
 ## Association Rules
 
